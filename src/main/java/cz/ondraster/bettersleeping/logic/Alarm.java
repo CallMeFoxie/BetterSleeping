@@ -56,7 +56,7 @@ public class Alarm {
 
       long curTime = world.getWorldTime();
 
-      if (mntTotal == 0) {
+      if (alarms.size() == 0) {
          long i = curTime + 24000L;
          i -= i % 24000;
          i += Config.defaultWakeUpTime;
