@@ -81,7 +81,7 @@ public class Alarm {
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
          if (player.isPlayerSleeping()) {
             player.wakeUpPlayer(false, false, true);
-
+            
             if (Config.enableSleepCounter) {
                SleepingProperty property = SleepingProperty.get(player);
                property.sleepCounter += (world.getWorldTime() - curTime) * Config.sleepPerSleptTick;

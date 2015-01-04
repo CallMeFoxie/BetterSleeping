@@ -11,9 +11,9 @@ public class Config {
    public static double chanceToStopRain = 0.9;
    public static boolean enableSleepCounter = true;
    public static long spawnSleepCounter = 12000;
-   public static int ticksPerSleepCounter = 4;
+   public static int ticksPerSleepCounter = 6;
    public static double sleepPerSleptTick = 0.25;
-   public static int maximumSleepCounter = 24000;
+   public static int maximumSleepCounter = 84000;
 
    private Configuration cfg;
 

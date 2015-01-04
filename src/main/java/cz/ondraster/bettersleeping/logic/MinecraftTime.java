@@ -28,8 +28,16 @@ public class MinecraftTime {
       return (localHr < 10 ? "0" : "") + localHr + ":" + (minute < 10 ? "0" : "") + minute;
    }
 
+   public int getRealHour() {
+      return (hour + 6) % 24;
+   }
+
+   public int getRealMinute() {
+      return minute;
+   }
+
    public static long extrapolateTime(int hour, int minute) {
       minute = (int) (minute * (double) (50 / 60));
-      return 20 * minute + (hour * 50 * 20);
+      return 20 * minute + ((hour + 1) * 50 * 20);
    }
 }

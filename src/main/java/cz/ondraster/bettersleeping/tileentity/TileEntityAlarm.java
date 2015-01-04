@@ -57,6 +57,24 @@ public class TileEntityAlarm extends TileEntity {
          minute = 59;
    }
 
+   public void incTenHours() {
+      hour += 10;
+      if (hour >= 24)
+         hour -= 30;
+      if (hour < 0)
+         hour += 10;
+
+      hour %= 24;
+   }
+
+   public void decTenHours() {
+      hour -= 10;
+      if (hour < 0)
+         hour += 30;
+
+      hour %= 24;
+   }
+
    public int getHour() {
       return hour;
    }

@@ -50,14 +50,28 @@ public class MessageGuiAlarmButton implements IMessage, IMessageHandler<MessageG
       if (tileEntity instanceof TileEntityAlarm) {
          TileEntityAlarm alarm = (TileEntityAlarm) tileEntity;
          switch (message.button) {
+            case GuiAlarm.BTN_TENHRDOWN:
+               alarm.decTenHours();
+               break;
             case GuiAlarm.BTN_HRDOWN:
                alarm.decHour();
+               break;
+            case GuiAlarm.BTN_TENHRUP:
+               alarm.incTenHours();
                break;
             case GuiAlarm.BTN_HRUP:
                alarm.incHour();
                break;
+            case GuiAlarm.BTN_TENMNTDOWN:
+               for (int i = 0; i < 10; i++)
+                  alarm.decMinute();
+               break;
             case GuiAlarm.BTN_MNTDOWN:
                alarm.decMinute();
+               break;
+            case GuiAlarm.BTN_TENMNTUP:
+               for (int i = 0; i < 10; i++)
+                  alarm.incMinute();
                break;
             case GuiAlarm.BTN_MNTUP:
                alarm.incMinute();

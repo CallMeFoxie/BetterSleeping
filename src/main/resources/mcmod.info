@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "bettersleeping",
+  "name": "Better Sleeping",
+  "description": "Overhauling how sleeping works. Sleep during the day but not too much!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["OndraSter"],
+  "credits": "BluSunrize for the Alarm GUI",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
