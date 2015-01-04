@@ -8,42 +8,32 @@ public class BSTransformer implements IClassTransformer {
    public byte[] transform(String className, String newClassName, byte[] origCode) {
       //System.out.println(className);
       if (className.equals("net.minecraft.entity.player.EntityPlayer") || className.equals("yz")) {
-         return patchClass(className, origCode, true);
+         return patchClass(className, origCode);
       }
 
       return origCode;
    }
 
-   private byte[] patchClass(String className, byte[] origCode, boolean isDeobfEnv) {
+   private byte[] patchClass(String className, byte[] origCode) {
       //final String methodToPatch = "b";
       final String methodToPatch = "sleepInBedAt";
       final String methodToPatch2 = "a";
       final String methodToPatch3 = "onUpdate";
+      final String methodToPatch4 = "h";
 
       ClassReader rd = new ClassReader(origCode);
       ClassWriter wr = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
       ClassVisitor cv = new ClassVisitor(Opcodes.ASM4, wr) {
          @Override
          public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-            if (name.equals(methodToPatch) || (name.equals(methodToPatch2) && desc.endsWith(")Lza;")) || name.equals(methodToPatch3)) {
-               System.out.println("===============\nFound method to patch!");
+            if (name.equals(methodToPatch) || (name.equals(methodToPatch2) && desc.endsWith(")Lza;")) ||
+                  name.equals(methodToPatch3) || (name.equals(methodToPatch4) && desc.equals("()V"))) {
                return new MethodVisitor(Opcodes.ASM4, super.visitMethod(access, name, desc, signature, exceptions)) {
                   @Override
-                  public void visitLineNumber(int line, Label start) {
-                     if (line == 926) {
-                        System.out.println("===============\nSuccesfuly found line 926!");
-                        return;
-                     }
-
-                     super.visitLineNumber(line, start);
-                  }
-
-                  @Override
                   public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-                     if (desc.equals("()Z") && name.equals("isDaytime")) {
+                     if (desc.equals("()Z") && (name.equals("isDaytime") || name.equals("w"))) {
                         super.visitInsn(Opcodes.POP);
                         super.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canNotSleep", desc, false);
-
                      } else {
                         super.visitMethodInsn(opcode, owner, name, desc, itf);
                      }
