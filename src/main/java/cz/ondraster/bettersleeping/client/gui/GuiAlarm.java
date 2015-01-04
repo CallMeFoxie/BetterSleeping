@@ -2,6 +2,7 @@ package cz.ondraster.bettersleeping.client.gui;
 
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.container.ContainerAlarm;
+import cz.ondraster.bettersleeping.logic.MinecraftTime;
 import cz.ondraster.bettersleeping.network.MessageGuiAlarmButton;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
@@ -54,7 +55,8 @@ public class GuiAlarm extends GuiContainer {
       super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_BLEND);
-      this.drawCenteredString(fontRendererObj, tileEntity.getHour() + ":" + tileEntity.getMinute(), guiLeft + 75, guiTop + 30, 0xFFFFFF);
+      String time = MinecraftTime.getFromTime(tileEntity.getHour(), tileEntity.getMinute()).toString();
+      this.drawCenteredString(fontRendererObj, time, guiLeft + 75, guiTop + 30, 0xFFFFFF);
    }
 
    @Override

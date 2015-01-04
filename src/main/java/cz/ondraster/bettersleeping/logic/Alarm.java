@@ -1,7 +1,6 @@
 package cz.ondraster.bettersleeping.logic;
 
 import cz.ondraster.bettersleeping.Config;
-import cz.ondraster.bettersleeping.MinecraftTime;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -47,7 +46,7 @@ public class Alarm {
       List<TileEntityAlarm> alarms = getAllAlarms(world.playerEntities);
       int mntTotal = 0;
       for (TileEntityAlarm alarm : alarms) {
-         mntTotal += (alarm.getMinute() + alarm.getHour() * MINUTES_IN_HOUR) * 20; // (minutes + hours * minutesInHour) * ticks
+         mntTotal += MinecraftTime.extrapolateTime(alarm.getHour(), alarm.getMinute()); // (minutes + hours * minutesInHour) * ticks
       }
 
       if (alarms.size() != 0)
@@ -60,6 +59,7 @@ public class Alarm {
       if (mntTotal == 0) {
          long i = curTime + 24000L;
          i -= i % 24000;
+         i += Config.defaultWakeUpTime;
          i += world.rand.nextInt(Config.oversleepWithoutAlarm);
          world.setWorldTime(i);
       } else {
@@ -81,7 +81,7 @@ public class Alarm {
          if (player.isPlayerSleeping())
             player.wakeUpPlayer(false, false, true);
 
-         player.addChatMessage(new ChatComponentText("Good morning! It is " + time.hour + ":" + time.minute));
+         player.addChatMessage(new ChatComponentText("Good morning! It is " + time.toString()));
       }
 
       // possibly reset weather?

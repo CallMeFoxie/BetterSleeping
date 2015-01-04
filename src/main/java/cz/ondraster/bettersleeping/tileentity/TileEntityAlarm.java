@@ -47,14 +47,14 @@ public class TileEntityAlarm extends TileEntity {
 
    public void incMinute() {
       minute++;
-      if (minute >= 50)
+      if (minute >= 60)
          minute = 0;
    }
 
    public void decMinute() {
       minute--;
       if (minute < 0)
-         minute = 49;
+         minute = 59;
    }
 
    public int getHour() {
