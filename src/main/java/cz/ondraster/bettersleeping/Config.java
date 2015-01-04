@@ -14,6 +14,10 @@ public class Config {
    public static int ticksPerSleepCounter = 6;
    public static double sleepPerSleptTick = 0.25;
    public static int maximumSleepCounter = 84000;
+   public static boolean enableDebuffs = true;
+   public static int slownessDebuff = 200;
+   public static int visionDebuff = 100;
+   public static boolean sleepOnGround = true;
 
    private Configuration cfg;
 
@@ -28,6 +32,10 @@ public class Config {
       ticksPerSleepCounter = cfg.getInt("ticksPerSleepCounter", "config", ticksPerSleepCounter, 1, 23999, "How many player ticks between decreasing sleep counter");
       sleepPerSleptTick = cfg.get("config", "sleepPerSleptTick", sleepPerSleptTick, "How much sleep is increased with every slept tick").getDouble();
       maximumSleepCounter = cfg.getInt("maximumSleepCounter", "config", maximumSleepCounter, 0, Integer.MAX_VALUE, "How much sleep counter you can reach before being denied sleep privilige.");
+      enableDebuffs = cfg.getBoolean("enableDebuffs", "config", enableDebuffs, "Enable all debuffs related to exhaustion");
+      slownessDebuff = cfg.getInt("slownessDebuff", "config", slownessDebuff, 1, 23999, "Sleep level at which slowness debuff is applied");
+      visionDebuff = cfg.getInt("visionDebuff", "config", visionDebuff, 1, 23999, "Sleep level at which vision debuff is applied");
+      sleepOnGround = cfg.getBoolean("sleepOnGround", "config", sleepOnGround, "sleep on ground when absolutely exhausted");
 
       save();
    }

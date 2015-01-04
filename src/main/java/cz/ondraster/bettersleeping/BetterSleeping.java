@@ -14,6 +14,8 @@ import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,13 +63,32 @@ public class BetterSleeping {
 
    @SubscribeEvent
    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+      SleepingProperty property = null;
       if (Config.enableSleepCounter) {
-         SleepingProperty property = SleepingProperty.get(event.player);
+         property = SleepingProperty.get(event.player);
          property.ticksSinceUpdate++;
          if (property.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
             property.ticksSinceUpdate = 0;
             property.sleepCounter--;
+            if (property.sleepCounter < 0)
+               property.sleepCounter = 0;
          }
+      }
+
+      if (Config.enableDebuffs && Config.enableSleepCounter) {
+         if (property.sleepCounter <= Config.slownessDebuff) {
+            if (event.player.getActivePotionEffect(Potion.moveSlowdown) == null)
+               event.player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), 20));
+         }
+
+         if (property.sleepCounter <= Config.visionDebuff) {
+            if (event.player.getActivePotionEffect(Potion.blindness) == null)
+               event.player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 20));
+         }
+
+         /*if (property.sleepCounter == 0 && !event.player.isPlayerSleeping()) {
+            event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
+         }*/
       }
    }
 
