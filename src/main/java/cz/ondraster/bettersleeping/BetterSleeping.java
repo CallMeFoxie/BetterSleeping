@@ -13,8 +13,10 @@ import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 
 @Mod(modid = BetterSleeping.MODID, version = BetterSleeping.VERSION, name = BetterSleeping.NAME)
 public class BetterSleeping {
@@ -65,5 +67,11 @@ public class BetterSleeping {
             property.sleepCounter--;
          }
       }
+   }
+
+   @SubscribeEvent
+   public void onEntityConstructing(EntityEvent.EntityConstructing event) {
+      if (event.entity instanceof EntityPlayer && SleepingProperty.get((EntityPlayer) event.entity) == null)
+         SleepingProperty.register((EntityPlayer) event.entity);
    }
 }
