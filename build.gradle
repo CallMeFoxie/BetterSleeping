@@ -43,3 +43,9 @@ processResources
                 exclude 'mcmod.info'
             }
         }
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'cz.ondraster.bettersleeping.asm.BetterSleepingCoreLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
