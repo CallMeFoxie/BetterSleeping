@@ -58,10 +58,8 @@ public class GuiAlarm extends GuiContainer {
       String currentTime = MinecraftTime.getFromWorldTime(tileEntity.getWorldObj().getWorldTime()).toString();
       this.drawCenteredString(fontRendererObj, currentTime, guiLeft + 65, guiTop + 25, 0xFFFFFF);
 
-      GL11.glScalef(1.5f, 1.5f, 1.5f);
       String time = MinecraftTime.getFromTime(tileEntity.getHour(), tileEntity.getMinute()).toString();
       this.drawCenteredString(fontRendererObj, time, guiLeft + 65, guiTop + 85, 0xFFFFFF);
-      GL11.glScalef(1f, 1f, 1f);
    }
 
    @Override

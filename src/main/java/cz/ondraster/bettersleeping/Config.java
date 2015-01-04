@@ -12,7 +12,8 @@ public class Config {
    public static boolean enableSleepCounter = true;
    public static long spawnSleepCounter = 12000;
    public static int ticksPerSleepCounter = 4;
-   public static int sleepPerSleptTick = 1;
+   public static double sleepPerSleptTick = 0.25;
+   public static int maximumSleepCounter = 24000;
 
    private Configuration cfg;
 
@@ -25,7 +26,8 @@ public class Config {
       chanceToStopRain = cfg.get("config", "chanceToStopRain", chanceToStopRain, "what is the chance that it will stop raining").getDouble();
       enableSleepCounter = cfg.getBoolean("enableSleepCounter", "config", enableSleepCounter, "Enable sleep counter for all sub features");
       ticksPerSleepCounter = cfg.getInt("ticksPerSleepCounter", "config", ticksPerSleepCounter, 1, 23999, "How many player ticks between decreasing sleep counter");
-      sleepPerSleptTick = cfg.getInt("sleepPerSleptTick", "config", sleepPerSleptTick, 1, 23999, "How much sleep is increased with every slept tick");
+      sleepPerSleptTick = cfg.get("config", "sleepPerSleptTick", sleepPerSleptTick, "How much sleep is increased with every slept tick").getDouble();
+      maximumSleepCounter = cfg.getInt("maximumSleepCounter", "config", maximumSleepCounter, 0, Integer.MAX_VALUE, "How much sleep counter you can reach before being denied sleep privilige.");
 
       save();
    }

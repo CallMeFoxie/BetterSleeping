@@ -14,9 +14,11 @@ import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 @Mod(modid = BetterSleeping.MODID, version = BetterSleeping.VERSION, name = BetterSleeping.NAME)
 public class BetterSleeping {
@@ -73,5 +75,17 @@ public class BetterSleeping {
    public void onEntityConstructing(EntityEvent.EntityConstructing event) {
       if (event.entity instanceof EntityPlayer && SleepingProperty.get((EntityPlayer) event.entity) == null)
          SleepingProperty.register((EntityPlayer) event.entity);
+   }
+
+   @SubscribeEvent
+   public void onPlayerSleepInBed(PlayerSleepInBedEvent event) {
+      if (Config.enableSleepCounter) {
+         SleepingProperty property = SleepingProperty.get(event.entityPlayer);
+
+         if (property.sleepCounter >= Config.maximumSleepCounter) {
+            event.entityPlayer.addChatComponentMessage(new ChatComponentText("You are not tired right now."));
+            event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
+         }
+      }
    }
 }
