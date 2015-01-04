@@ -1,6 +1,7 @@
 package cz.ondraster.bettersleeping.logic;
 
 import cz.ondraster.bettersleeping.Config;
+import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -78,8 +79,14 @@ public class Alarm {
 
       // reset all players
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
-         if (player.isPlayerSleeping())
+         if (player.isPlayerSleeping()) {
             player.wakeUpPlayer(false, false, true);
+
+            if (Config.enableSleepCounter) {
+               SleepingProperty property = SleepingProperty.get(player);
+               property.sleepCounter += (world.getWorldTime() - curTime) * Config.sleepPerSleptTick;
+            }
+         }
 
          player.addChatMessage(new ChatComponentText("Wake up! It is " + time.toString()));
       }

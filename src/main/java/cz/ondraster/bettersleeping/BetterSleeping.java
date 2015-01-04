@@ -12,6 +12,7 @@ import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.network.Network;
+import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -44,7 +45,6 @@ public class BetterSleeping {
 
    @SubscribeEvent
    public void onPreWorldTick(TickEvent.WorldTickEvent event) {
-
       if (!(event.world instanceof WorldServer))
          return;
 
@@ -52,6 +52,18 @@ public class BetterSleeping {
 
       if (world.areAllPlayersAsleep()) {
          Alarm.sleepWorld(world);
+      }
+   }
+
+   @SubscribeEvent
+   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+      if (Config.enableSleepCounter) {
+         SleepingProperty property = SleepingProperty.get(event.player);
+         property.ticksSinceUpdate++;
+         if (property.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
+            property.ticksSinceUpdate = 0;
+            property.sleepCounter--;
+         }
       }
    }
 }
