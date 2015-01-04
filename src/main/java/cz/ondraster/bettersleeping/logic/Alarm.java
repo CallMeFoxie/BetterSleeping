@@ -81,7 +81,7 @@ public class Alarm {
          if (player.isPlayerSleeping())
             player.wakeUpPlayer(false, false, true);
 
-         player.addChatMessage(new ChatComponentText("Good morning! It is " + time.toString()));
+         player.addChatMessage(new ChatComponentText("Wake up! It is " + time.toString()));
       }
 
       // possibly reset weather?
