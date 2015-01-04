@@ -29,7 +29,7 @@ public class Alarm {
    public static TileEntityAlarm findNearbyAlarm(EntityPlayer player) {
       World world = player.worldObj;
       for (double x = player.posX - 2; x < player.posX + 2; x++) {
-         for (double y = player.posY; y < player.posY + 1; y++) {
+         for (double y = player.posY - 1; y < player.posY + 2; y++) {
             for (double z = player.posZ - 2; z < player.posZ + 2; z++) {
                TileEntity tileEntity = world.getTileEntity((int) x, (int) y, (int) z);
                if (tileEntity instanceof TileEntityAlarm)

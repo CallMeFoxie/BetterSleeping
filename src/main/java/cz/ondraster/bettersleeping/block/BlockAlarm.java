@@ -16,6 +16,7 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
    protected BlockAlarm() {
       super(Material.anvil);
       setCreativeTab(CreativeTabs.tabDecorations);
+      setBlockBounds(0f, 0f, 0.35f, 1f, 0.6f, 0.75f);
    }
 
    @Override

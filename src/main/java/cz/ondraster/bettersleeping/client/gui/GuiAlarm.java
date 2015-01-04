@@ -31,10 +31,10 @@ public class GuiAlarm extends GuiContainer {
    public void initGui() {
       super.initGui();
       buttonList.clear();
-      GuiButton hrUp = new GuiButton(BTN_HRUP, guiLeft + 65, guiTop + 10, 20, 20, "^");
-      GuiButton hrDown = new GuiButton(BTN_HRDOWN, guiLeft + 65, guiTop + 40, 20, 20, "v");
-      GuiButton mntUp = new GuiButton(BTN_MNTUP, guiLeft + 85, guiTop + 10, 20, 20, "^");
-      GuiButton mntDown = new GuiButton(BTN_MNTDOWN, guiLeft + 85, guiTop + 40, 20, 20, "v");
+      GuiButton hrUp = new GuiButton(BTN_HRUP, guiLeft + 45, guiTop + 63, 20, 20, "^");
+      GuiButton hrDown = new GuiButton(BTN_HRDOWN, guiLeft + 45, guiTop + 95, 20, 20, "v");
+      GuiButton mntUp = new GuiButton(BTN_MNTUP, guiLeft + 65, guiTop + 63, 20, 20, "^");
+      GuiButton mntDown = new GuiButton(BTN_MNTDOWN, guiLeft + 65, guiTop + 95, 20, 20, "v");
       buttonList.add(hrUp);
       buttonList.add(mntUp);
       buttonList.add(hrDown);
@@ -55,8 +55,12 @@ public class GuiAlarm extends GuiContainer {
       super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_BLEND);
+      String currentTime = MinecraftTime.getFromWorldTime(tileEntity.getWorldObj().getWorldTime()).toString();
+      this.drawCenteredString(fontRendererObj, currentTime, guiLeft + 65, guiTop + 25, 0xFFFFFF);
+
       String time = MinecraftTime.getFromTime(tileEntity.getHour(), tileEntity.getMinute()).toString();
-      this.drawCenteredString(fontRendererObj, time, guiLeft + 75, guiTop + 30, 0xFFFFFF);
+      this.drawCenteredString(fontRendererObj, time, guiLeft + 65, guiTop + 85, 0xFFFFFF);
+
    }
 
    @Override

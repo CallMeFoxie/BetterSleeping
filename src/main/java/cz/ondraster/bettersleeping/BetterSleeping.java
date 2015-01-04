@@ -17,7 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = BetterSleeping.MODID, version = BetterSleeping.VERSION, name = BetterSleeping.NAME)
 public class BetterSleeping {
-   public static final String MODID = "BetterSleeping";
+   public static final String MODID = "bettersleeping";
    public static final String VERSION = "1.0";
    public static final String NAME = "Better Sleeping";
    public static String AUTHOR = "OndraSter";
