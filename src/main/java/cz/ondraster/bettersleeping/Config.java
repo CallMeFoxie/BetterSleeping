@@ -10,10 +10,10 @@ public class Config {
    public static int oversleepWithAlarm = 400;
    public static double chanceToStopRain = 0.9;
    public static boolean enableSleepCounter = true;
-   public static long spawnSleepCounter = 12000;
-   public static int ticksPerSleepCounter = 6;
-   public static double sleepPerSleptTick = 0.25;
-   public static int maximumSleepCounter = 84000;
+   public static long spawnSleepCounter = 18000;
+   public static int ticksPerSleepCounter = 4;
+   public static double sleepPerSleptTick = 0.5;
+   public static int maximumSleepCounter = 18000;
    public static boolean enableDebuffs = true;
    public static int slownessDebuff = 200;
    public static int visionDebuff = 100;
