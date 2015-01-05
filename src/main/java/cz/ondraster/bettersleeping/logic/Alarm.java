@@ -3,6 +3,7 @@ package cz.ondraster.bettersleeping.logic;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -81,14 +82,14 @@ public class Alarm {
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
          if (player.isPlayerSleeping()) {
             player.wakeUpPlayer(false, false, true);
-            
+
             if (Config.enableSleepCounter) {
                SleepingProperty property = SleepingProperty.get(player);
                property.sleepCounter += (world.getWorldTime() - curTime) * Config.sleepPerSleptTick;
             }
          }
 
-         player.addChatMessage(new ChatComponentText("Wake up! It is " + time.toString()));
+         player.addChatMessage(new ChatComponentText(I18n.format("msg.wakeUp", time.toString())));
       }
 
       // possibly reset weather?
@@ -97,6 +98,15 @@ public class Alarm {
    }
 
    public static boolean canNotSleep() {
+      return false;
+   }
+
+   public static boolean canSleep(EntityPlayer player) {
+      SleepingProperty property = SleepingProperty.get(player);
+      if (property.sleepCounter == 0 && Config.enableDebuffs && Config.enableSleepCounter && Config.sleepOnGround) {
+         return true;
+      }
+
       return false;
    }
 

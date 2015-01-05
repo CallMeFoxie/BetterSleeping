@@ -38,6 +38,6 @@ public class MinecraftTime {
 
    public static long extrapolateTime(int hour, int minute) {
       minute = (int) (minute * (double) (50 / 60));
-      return 20 * minute + ((hour + 1) * 50 * 20);
+      return 20 * minute + (hour * 50 * 20);
    }
 }

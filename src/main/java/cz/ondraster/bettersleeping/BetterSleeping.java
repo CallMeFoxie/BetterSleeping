@@ -13,6 +13,7 @@ import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -64,6 +65,9 @@ public class BetterSleeping {
    @SubscribeEvent
    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
       SleepingProperty property = null;
+      if (event.player.worldObj.isRemote)
+         return;
+
       if (Config.enableSleepCounter) {
          property = SleepingProperty.get(event.player);
          property.ticksSinceUpdate++;
@@ -86,9 +90,10 @@ public class BetterSleeping {
                event.player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 20));
          }
 
-         /*if (property.sleepCounter == 0 && !event.player.isPlayerSleeping()) {
+         if (property.sleepCounter == 0 && !event.player.isPlayerSleeping()) {
+            event.player.addChatMessage(new ChatComponentText(I18n.format("msg.tooTired")));
             event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
-         }*/
+         }
       }
    }
 
@@ -104,7 +109,7 @@ public class BetterSleeping {
          SleepingProperty property = SleepingProperty.get(event.entityPlayer);
 
          if (property.sleepCounter >= Config.maximumSleepCounter) {
-            event.entityPlayer.addChatComponentMessage(new ChatComponentText("You are not tired right now."));
+            event.entityPlayer.addChatComponentMessage(new ChatComponentText(I18n.format("msg.tooTired")));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
       }
