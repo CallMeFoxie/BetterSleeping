@@ -9,6 +9,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class SleepingProperty implements IExtendedEntityProperties {
    public long sleepCounter = 0;
+   public long lastUpdate = Integer.MAX_VALUE;
    public static final String EXT_PROP_NAME = "SleepingProperty";
    public int ticksSinceUpdate = 0;
 

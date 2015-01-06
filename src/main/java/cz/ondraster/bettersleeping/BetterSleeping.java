@@ -10,11 +10,14 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
+import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
 import cz.ondraster.bettersleeping.logic.Alarm;
+import cz.ondraster.bettersleeping.network.MessageUpdateTiredness;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
@@ -47,6 +50,7 @@ public class BetterSleeping {
    public void init(FMLInitializationEvent event) {
       FMLCommonHandler.instance().bus().register(this);
       MinecraftForge.EVENT_BUS.register(this);
+      MinecraftForge.EVENT_BUS.register(new SleepOverlay());
 
    }
 
@@ -65,8 +69,10 @@ public class BetterSleeping {
    @SubscribeEvent
    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
       SleepingProperty property = null;
-      if (event.player.worldObj.isRemote)
+      if (event.player.worldObj.isRemote) {
+         SleepOverlay.playerProperty = SleepingProperty.get(event.player);
          return;
+      }
 
       if (Config.enableSleepCounter) {
          property = SleepingProperty.get(event.player);
@@ -76,6 +82,12 @@ public class BetterSleeping {
             property.sleepCounter--;
             if (property.sleepCounter < 0)
                property.sleepCounter = 0;
+
+         }
+
+         if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter > 1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
+            Network.networkChannel.sendTo(new MessageUpdateTiredness(property.sleepCounter), (EntityPlayerMP) event.player);
+            property.lastUpdate = property.sleepCounter;
          }
       }
 
@@ -109,7 +121,7 @@ public class BetterSleeping {
          SleepingProperty property = SleepingProperty.get(event.entityPlayer);
 
          if (property.sleepCounter >= Config.maximumSleepCounter) {
-            event.entityPlayer.addChatComponentMessage(new ChatComponentText(I18n.format("msg.tooTired")));
+            event.entityPlayer.addChatComponentMessage(new ChatComponentText(I18n.format("msg.notTired")));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
       }
