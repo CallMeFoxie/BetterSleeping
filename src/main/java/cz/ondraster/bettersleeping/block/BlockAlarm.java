@@ -26,7 +26,7 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
 
       player.openGui(BetterSleeping.INSTANCE, GuiHandlers.GUI_ALARM, world, x, y, z);
       return true;
-      
+
    }
 
    @Override
