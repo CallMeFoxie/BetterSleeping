@@ -97,7 +97,7 @@ public class Alarm {
          world.provider.resetRainAndThunder();
    }
 
-   public static boolean canNotSleep() {
+   public static boolean canNotSleep(EntityPlayer player) {
       return false;
    }
 

@@ -15,7 +15,6 @@ public class BSTransformer implements IClassTransformer {
    }
 
    private byte[] patchIsDaytime(String className, byte[] origCode) {
-      //final String methodToPatch = "b";
       final String methodToPatch = "sleepInBedAt";
       final String methodToPatch2 = "a";
       final String methodToPatch3 = "onUpdate";
@@ -25,7 +24,7 @@ public class BSTransformer implements IClassTransformer {
       final String methodToPatch6 = "j";
 
       ClassReader rd = new ClassReader(origCode);
-      ClassWriter wr = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+      ClassWriter wr = new ClassWriter(ClassWriter.COMPUTE_MAXS);
       ClassVisitor cv = new ClassVisitor(Opcodes.ASM4, wr) {
          @Override
          public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
@@ -36,7 +35,8 @@ public class BSTransformer implements IClassTransformer {
                   public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
                      if (desc.equals("()Z") && (name.equals("isDaytime") || name.equals("w"))) {
                         super.visitInsn(Opcodes.POP);
-                        super.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canNotSleep", desc, false);
+                        mv.visitVarInsn(Opcodes.ALOAD, 0);
+                        super.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canNotSleep", "(Lnet/minecraft/entity/player/EntityPlayer;)Z", false);
                      } else {
                         super.visitMethodInsn(opcode, owner, name, desc, itf);
                      }
