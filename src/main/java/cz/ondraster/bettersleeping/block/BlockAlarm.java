@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class BlockAlarm extends Block implements ITileEntityProvider {
    protected BlockAlarm() {
-      super(Material.anvil);
+      super(Material.plants);
       setCreativeTab(CreativeTabs.tabDecorations);
       setBlockBounds(0f, 0f, 0.35f, 1f, 0.6f, 0.75f);
    }
@@ -24,12 +24,9 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
       if (player.isSneaking())
          return false;
 
-      //if (!world.isRemote) {
       player.openGui(BetterSleeping.INSTANCE, GuiHandlers.GUI_ALARM, world, x, y, z);
       return true;
-      //}
-
-      //return false;
+      
    }
 
    @Override
