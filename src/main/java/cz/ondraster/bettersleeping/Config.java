@@ -18,6 +18,9 @@ public class Config {
    public static int slownessDebuff = 200;
    public static int visionDebuff = 100;
    public static boolean sleepOnGround = true;
+   public static int guiOffsetLeft = 4;
+   public static int guiOffsetTop = 8;
+   public static boolean enableSleepyBar = true;
 
    private Configuration cfg;
 
@@ -36,6 +39,10 @@ public class Config {
       slownessDebuff = cfg.getInt("slownessDebuff", "config", slownessDebuff, 1, 23999, "Sleep level at which slowness debuff is applied");
       visionDebuff = cfg.getInt("visionDebuff", "config", visionDebuff, 1, 23999, "Sleep level at which vision debuff is applied");
       sleepOnGround = cfg.getBoolean("sleepOnGround", "config", sleepOnGround, "sleep on ground when absolutely exhausted");
+
+      guiOffsetLeft = cfg.getInt("guiOffsetLeft", "gui", guiOffsetLeft, 1, 256, "Left offset of the sleepybar");
+      guiOffsetTop = cfg.getInt("guiOffsetTop", "gui", guiOffsetTop, 1, 256, "Top offset of the sleepybar");
+      enableSleepyBar = cfg.getBoolean("enableSleepyBar", "gui", enableSleepyBar, "Whether to enable the sleepybar render");
 
       save();
    }

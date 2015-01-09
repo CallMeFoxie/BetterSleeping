@@ -50,7 +50,9 @@ public class BetterSleeping {
    public void init(FMLInitializationEvent event) {
       FMLCommonHandler.instance().bus().register(this);
       MinecraftForge.EVENT_BUS.register(this);
-      MinecraftForge.EVENT_BUS.register(new SleepOverlay());
+
+      if (Config.enableSleepyBar)
+         MinecraftForge.EVENT_BUS.register(new SleepOverlay());
 
    }
 

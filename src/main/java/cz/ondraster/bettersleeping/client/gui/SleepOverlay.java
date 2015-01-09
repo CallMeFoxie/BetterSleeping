@@ -6,7 +6,6 @@ import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Items;
@@ -20,9 +19,10 @@ public class SleepOverlay extends Gui {
    public static final int MAX_OFFSET = BAR_WIDTH - BTN_WIDTH;
    public static final int BAR_HEIGHT = 8;
 
-   public static SleepingProperty playerProperty;
+   public static final int ICON_WIDTH = 16;
+   public static final int ICON_HEIGHT = 16;
 
-   private static RenderItem itemRenderer = new RenderItem();
+   public static SleepingProperty playerProperty;
 
    @SubscribeEvent
    public void onGuiRender(RenderGameOverlayEvent event) {
@@ -37,18 +37,18 @@ public class SleepOverlay extends Gui {
       TextureManager mgr = Minecraft.getMinecraft().renderEngine;
       mgr.bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/gui/bar.png"));
 
-      drawTexturedModalRect(4, 8, 0, 0, BAR_WIDTH, BAR_HEIGHT);
+      drawTexturedModalRect(Config.guiOffsetLeft, Config.guiOffsetTop, 0, 0, BAR_WIDTH, BAR_HEIGHT);
 
       int takenPercent = (int) (((double) playerProperty.sleepCounter / Config.maximumSleepCounter) * MAX_OFFSET);
       if (takenPercent > MAX_OFFSET)
          takenPercent = MAX_OFFSET;
 
-      drawTexturedModalRect(4 + takenPercent, 8, 0, 8, BTN_WIDTH, BAR_HEIGHT);
+      drawTexturedModalRect(4 + takenPercent, Config.guiOffsetTop, 0, 8, BTN_WIDTH, BAR_HEIGHT);
 
       ItemStack bed = new ItemStack(Items.bed);
 
       mgr.bindTexture(TextureMap.locationItemsTexture);
-      drawTexturedModelRectFromIcon(4 + BAR_WIDTH + 4, 4, Items.bed.getIcon(bed, 1), 16, 16);
+      drawTexturedModelRectFromIcon(Config.guiOffsetLeft + BAR_WIDTH + 4, Config.guiOffsetTop - ((ICON_HEIGHT - BAR_HEIGHT) / 2), Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
 
    }
 }
