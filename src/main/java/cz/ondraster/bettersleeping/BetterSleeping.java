@@ -12,6 +12,7 @@ import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
 import cz.ondraster.bettersleeping.logic.Alarm;
+import cz.ondraster.bettersleeping.logic.AlternateSleep;
 import cz.ondraster.bettersleeping.network.MessageUpdateTiredness;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
@@ -32,6 +33,8 @@ public class BetterSleeping {
    public static final String VERSION = "1.0";
    public static final String NAME = "Better Sleeping";
    public static String AUTHOR = "OndraSter";
+
+   private int ticksSinceLastCheck = 0;
 
    @Mod.Instance
    public static BetterSleeping INSTANCE;
@@ -66,6 +69,16 @@ public class BetterSleeping {
       if (world.areAllPlayersAsleep()) {
          Alarm.sleepWorld(world);
       }
+
+      if (ticksSinceLastCheck > 10) {
+         int sleeping = AlternateSleep.getSleepingPeopleInWorld(event.world);
+         if ((double) sleeping / event.world.playerEntities.size() >= Config.percentPeopleToSleep) {
+            Alarm.sleepWorld(world);
+         }
+         ticksSinceLastCheck = 0;
+      }
+
+      ticksSinceLastCheck++;
    }
 
    @SubscribeEvent

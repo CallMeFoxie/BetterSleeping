@@ -21,12 +21,14 @@ public class Config {
    public static int guiOffsetLeft = 4;
    public static int guiOffsetTop = 8;
    public static boolean enableSleepyBar = true;
+   public static double percentPeopleToSleep = 0.5;
 
    private Configuration cfg;
 
    public Config(String filename) {
       cfg = new Configuration(new File(filename));
       cfg.load();
+      percentPeopleToSleep = cfg.get("config", "percentPeopleToSleep", percentPeopleToSleep, "How many players have to be in bed in a dimension to sleep.").getDouble();
       defaultWakeUpTime = cfg.getInt("defaultWakeUpTime", "config", defaultWakeUpTime, 0, 23999, "morning offset when no alarm is found [ticks]");
       oversleepWithoutAlarm = cfg.getInt("oversleepWithoutAlarm", "config", oversleepWithoutAlarm, 0, 23999, "how much at maximum should a person oversleep without an alarm [ticks]");
       oversleepWithAlarm = cfg.getInt("oversleepWithAlarm", "config", oversleepWithAlarm, 0, 23999, "how much at maximum should a person oversleep with an alarm [ticks]");
