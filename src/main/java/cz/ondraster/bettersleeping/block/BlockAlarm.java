@@ -7,8 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -16,7 +19,7 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
    protected BlockAlarm() {
       super(Material.plants);
       setCreativeTab(CreativeTabs.tabDecorations);
-      setBlockBounds(0f, 0f, 0.35f, 1f, 0.6f, 0.75f);
+      setBlockBounds(0f, 0f, 0f, 1f, 0.3f, 1.0f);
    }
 
    @Override
@@ -43,5 +46,27 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
    @Override
    public boolean isOpaqueCube() {
       return false;
+   }
+
+   @Override
+   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemstack) {
+      int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+      if (l == 0)
+         world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+
+
+      if (l == 1)
+         world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+
+
+      if (l == 2)
+         world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+
+
+      if (l == 3)
+         world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+
+
    }
 }

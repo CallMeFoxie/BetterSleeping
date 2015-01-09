@@ -24,8 +24,19 @@ public class AlarmRenderer extends TileEntitySpecialRenderer {
 
       GL11.glPushMatrix();
 
+      int meta = te.getBlockMetadata();
+      int rotation = 0;
+      if (meta == 3)
+         rotation = 180;
+      else if (meta == 4)
+         rotation = 90;
+      else if (meta == 5)
+         rotation = -90;
+
+
       GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
       GL11.glRotatef(180f, 0f, 0f, 1f);
+      GL11.glRotatef(-rotation, 0f, 1.0f, 0f);
       tm.bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/models/alarm.png"));
       modelAlarm.render();
       GL11.glPopMatrix();
