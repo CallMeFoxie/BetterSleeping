@@ -58,16 +58,6 @@ public class BetterSleeping {
       if (world.areAllPlayersAsleep()) {
          Alarm.sleepWorld(world);
       }
-
-      if (ticksSinceLastCheck > 10) {
-         int sleeping = AlternateSleep.getSleepingPeopleInWorld(event.world);
-         if ((double) sleeping / event.world.playerEntities.size() >= Config.percentPeopleToSleep) {
-            Alarm.sleepWorld(world);
-         }
-         ticksSinceLastCheck = 0;
-      }
-
-      ticksSinceLastCheck++;
    }
 
    @SubscribeEvent
@@ -128,6 +118,16 @@ public class BetterSleeping {
             event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.notTired"));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
+      }
+
+
+      // check for amount of people sleeping in this dimension
+      if (event.entityPlayer.worldObj.isRemote)
+         return;
+
+      int sleeping = AlternateSleep.getSleepingPeopleInWorld(event.entityPlayer.worldObj);
+      if ((double) sleeping / event.entityPlayer.worldObj.playerEntities.size() >= Config.percentPeopleToSleep) {
+         Alarm.sleepWorld(event.entityPlayer.worldObj);
       }
    }
 }

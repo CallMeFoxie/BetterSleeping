@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class Alarm {
    }
 
    @SuppressWarnings("unchecked")
-   public static void sleepWorld(WorldServer world) {
+   public static void sleepWorld(World world) {
       List<TileEntityAlarm> alarms = getAllAlarms(world.playerEntities);
       int mntTotal = 0;
       for (TileEntityAlarm alarm : alarms) {
