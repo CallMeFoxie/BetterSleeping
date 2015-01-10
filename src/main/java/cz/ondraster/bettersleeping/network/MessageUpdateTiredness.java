@@ -1,9 +1,9 @@
 package cz.ondraster.bettersleeping.network;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +31,7 @@ public class MessageUpdateTiredness implements IMessage, IMessageHandler<Message
 
    @Override
    public IMessage onMessage(MessageUpdateTiredness message, MessageContext ctx) {
-      EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
+      EntityPlayer player = BetterSleeping.proxy.getPlayer();
       SleepingProperty property = SleepingProperty.get(player);
       property.sleepCounter = message.tiredness;
 

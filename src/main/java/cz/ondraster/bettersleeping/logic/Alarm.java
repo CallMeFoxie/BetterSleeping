@@ -3,10 +3,9 @@ package cz.ondraster.bettersleeping.logic;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -89,7 +88,7 @@ public class Alarm {
             }
          }
 
-         player.addChatMessage(new ChatComponentText(I18n.format("msg.wakeUp", time.toString())));
+         player.addChatMessage(new ChatComponentTranslation("msg.wakeUp", time.toString()));
       }
 
       // possibly reset weather?

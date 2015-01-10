@@ -14,12 +14,11 @@ import cz.ondraster.bettersleeping.network.MessageUpdateTiredness;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.proxy.ProxyCommon;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
@@ -109,7 +108,7 @@ public class BetterSleeping {
          }
 
          if (property.sleepCounter == 0 && !event.player.isPlayerSleeping()) {
-            event.player.addChatMessage(new ChatComponentText(I18n.format("msg.tooTired")));
+            event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
             event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
          }
       }
@@ -127,7 +126,7 @@ public class BetterSleeping {
          SleepingProperty property = SleepingProperty.get(event.entityPlayer);
 
          if (property.sleepCounter >= Config.maximumSleepCounter) {
-            event.entityPlayer.addChatComponentMessage(new ChatComponentText(I18n.format("msg.notTired")));
+            event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.notTired"));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
       }

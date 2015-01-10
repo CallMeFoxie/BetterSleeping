@@ -8,12 +8,14 @@ import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.network.Network;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ProxyCommon {
    public void preinit(FMLPreInitializationEvent event) {
       BlockClass.register();
       Network network = new Network();
+      Network.initClient();
    }
 
    public void init(FMLInitializationEvent event) {
@@ -21,5 +23,9 @@ public class ProxyCommon {
       MinecraftForge.EVENT_BUS.register(BetterSleeping.INSTANCE);
 
       NetworkRegistry.INSTANCE.registerGuiHandler(BetterSleeping.INSTANCE, new GuiHandlers());
+   }
+
+   public EntityPlayer getPlayer() {
+      return null;
    }
 }
