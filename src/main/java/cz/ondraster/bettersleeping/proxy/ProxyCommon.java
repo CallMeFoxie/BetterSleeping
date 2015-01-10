@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
+import cz.ondraster.bettersleeping.item.ItemClass;
 import cz.ondraster.bettersleeping.network.Network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ProxyCommon {
    public void preinit(FMLPreInitializationEvent event) {
       BlockClass.register();
+      ItemClass.register();
       Network network = new Network();
       Network.initClient();
    }

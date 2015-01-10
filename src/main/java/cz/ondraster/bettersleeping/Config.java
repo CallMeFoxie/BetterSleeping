@@ -21,7 +21,10 @@ public class Config {
    public static int guiOffsetLeft = 4;
    public static int guiOffsetTop = 8;
    public static boolean enableSleepyBar = true;
+
    public static double percentPeopleToSleep = 0.5;
+
+   public static boolean enableRingWatch = true;
 
    private Configuration cfg;
 
@@ -45,6 +48,8 @@ public class Config {
       guiOffsetLeft = cfg.getInt("guiOffsetLeft", "gui", guiOffsetLeft, 1, 256, "Left offset of the sleepybar");
       guiOffsetTop = cfg.getInt("guiOffsetTop", "gui", guiOffsetTop, 1, 256, "Top offset of the sleepybar");
       enableSleepyBar = cfg.getBoolean("enableSleepyBar", "gui", enableSleepyBar, "Whether to enable the sleepybar render");
+
+      enableRingWatch = cfg.getBoolean("enableRingWatch", "gui", enableSleepCounter, "Enable Baubles Ring Watch");
 
       save();
    }
