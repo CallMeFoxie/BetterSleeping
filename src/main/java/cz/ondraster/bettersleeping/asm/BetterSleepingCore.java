@@ -18,7 +18,7 @@ public class BetterSleepingCore extends DummyModContainer {
       ModMetadata metadata = getMetadata();
       metadata.modId = BetterSleeping.MODID + "core";
       metadata.name = BetterSleeping.NAME + " Core";
-      metadata.version = BetterSleeping.VERSION;
+      metadata.version = "1.0";
       metadata.authorList.add(BetterSleeping.AUTHOR);
    }
 
