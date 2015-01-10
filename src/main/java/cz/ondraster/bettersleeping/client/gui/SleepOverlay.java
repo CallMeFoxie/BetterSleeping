@@ -1,6 +1,7 @@
 package cz.ondraster.bettersleeping.client.gui;
 
 import baubles.api.BaublesApi;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
@@ -8,7 +9,6 @@ import cz.ondraster.bettersleeping.item.ItemClass;
 import cz.ondraster.bettersleeping.logic.MinecraftTime;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Items;
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-public class SleepOverlay extends Gui {
+public class SleepOverlay extends OptionalGuiOverlay {
    public static final int BTN_WIDTH = 8;
    public static final int BAR_WIDTH = 32;
    public static final int MAX_OFFSET = BAR_WIDTH - BTN_WIDTH;
@@ -54,6 +54,13 @@ public class SleepOverlay extends Gui {
       mgr.bindTexture(TextureMap.locationItemsTexture);
       drawTexturedModelRectFromIcon(Config.guiOffsetLeft + BAR_WIDTH + 4, Config.guiOffsetTop - ((ICON_HEIGHT - BAR_HEIGHT) / 2), Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
 
+      renderTimeOverlay();
+
+   }
+
+   @Optional.Method(modid = "Baubles|API")
+   @Override
+   public void renderTimeOverlay() {
       if (Config.enableRingWatch) {
          IInventory baubles = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
          for (int i = 0; i < baubles.getSizeInventory(); i++) {
@@ -64,11 +71,9 @@ public class SleepOverlay extends Gui {
             if (itemStack.getItem() == ItemClass.itemRingWatch) {
                MinecraftTime time = MinecraftTime.getFromWorldTime(Minecraft.getMinecraft().theWorld.getWorldTime());
                drawCenteredString(Minecraft.getMinecraft().fontRenderer, time.toString(), Config.guiOffsetLeft + BAR_WIDTH / 2, Config.guiOffsetTop + 16, 0xFFFFFF);
-               ItemStack watch = new ItemStack(Items.clock);
-               break;
+               return;
             }
          }
       }
-
    }
 }
