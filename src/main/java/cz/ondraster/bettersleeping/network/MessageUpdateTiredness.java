@@ -31,9 +31,6 @@ public class MessageUpdateTiredness implements IMessage, IMessageHandler<Message
 
    @Override
    public IMessage onMessage(MessageUpdateTiredness message, MessageContext ctx) {
-      if (FMLClientHandler.instance().getClientPlayerEntity() == null)
-         return null;
-
       EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
       SleepingProperty property = SleepingProperty.get(player);
       property.sleepCounter = message.tiredness;

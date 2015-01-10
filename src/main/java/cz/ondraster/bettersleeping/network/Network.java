@@ -15,8 +15,11 @@ public class Network {
       init();
    }
 
-   private void init() {
+   public static void init() {
       networkChannel.registerMessage(MessageGuiAlarmButton.class, MessageGuiAlarmButton.class, 1, Side.SERVER);
+   }
+
+   public static void initClient() {
       networkChannel.registerMessage(MessageUpdateTiredness.class, MessageUpdateTiredness.class, 2, Side.CLIENT);
    }
 }
