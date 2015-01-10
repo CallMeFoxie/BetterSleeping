@@ -20,6 +20,7 @@ public class BlockAlarm extends Block implements ITileEntityProvider {
       super(Material.plants);
       setCreativeTab(CreativeTabs.tabDecorations);
       setBlockBounds(0f, 0f, 0f, 1f, 0.3f, 1.0f);
+      setBlockTextureName(BetterSleeping.MODID + ":alarm");
    }
 
    @Override

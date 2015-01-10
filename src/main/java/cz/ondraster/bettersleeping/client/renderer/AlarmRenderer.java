@@ -37,7 +37,7 @@ public class AlarmRenderer extends TileEntitySpecialRenderer {
       GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
       GL11.glRotatef(180f, 0f, 0f, 1f);
       GL11.glRotatef(-rotation, 0f, 1.0f, 0f);
-      tm.bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/models/alarm.png"));
+      tm.bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/alarm.png"));
       modelAlarm.render();
       GL11.glPopMatrix();
    }
