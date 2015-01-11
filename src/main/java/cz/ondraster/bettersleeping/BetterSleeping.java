@@ -23,13 +23,12 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
-@Mod(modid = BetterSleeping.MODID, name = BetterSleeping.NAME)
+@Mod(modid = BetterSleeping.MODID, name = BetterSleeping.NAME, version = BetterSleeping.VERSION)
 public class BetterSleeping {
    public static final String MODID = "bettersleeping";
    public static final String NAME = "Better Sleeping";
-   public static String AUTHOR = "OndraSter";
-
-   private int ticksSinceLastCheck = 0;
+   public static final String AUTHOR = "OndraSter";
+   public static final String VERSION = "BS_1710";
 
    @SidedProxy(clientSide = "cz.ondraster.bettersleeping.proxy.ProxyClient", serverSide = "cz.ondraster.bettersleeping.proxy.ProxyCommon")
    public static ProxyCommon proxy;

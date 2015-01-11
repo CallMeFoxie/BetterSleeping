@@ -1,3 +1,7 @@
+def VersionMajor = 0
+def VersionMinor = 1
+def VersionRev = 0
+
 buildscript {
     repositories {
         mavenCentral()
@@ -17,9 +21,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
+def VersionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null)
+    VersionBuild = System.getenv("BUILD_NUMBER")
+
+version = "1.7.10-${VersionMajor}.${VersionMinor}.${VersionRev}-${VersionBuild}"
 group = "cz.ondraster.bettersleeping"
-archivesBaseName = "BetterSleeping-1.7"
+archivesBaseName = "BetterSleeping"
 
 minecraft {
     version = "1.7.10-10.13.2.1277"
@@ -48,4 +56,13 @@ jar {
         attributes 'FMLCorePlugin': 'cz.ondraster.bettersleeping.asm.BetterSleepingCoreLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    appendix = 'deobf'
+}
+
+artifacts {
+    archives deobfJar
 }
