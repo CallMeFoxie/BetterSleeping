@@ -39,6 +39,7 @@ public class BetterSleeping {
 
    @EventHandler
    public void preinit(FMLPreInitializationEvent event) {
+      Config c = new Config(event.getSuggestedConfigurationFile().getAbsolutePath());
       proxy.preinit(event);
    }
 
