@@ -14,6 +14,7 @@ public class ItemRingWatch extends Item implements IBauble {
       setUnlocalizedName("ringwatch");
       setTextureName("bettersleeping:ringwatch");
       setCreativeTab(CreativeTabs.tabTools);
+      setMaxStackSize(1);
    }
 
    @Override
