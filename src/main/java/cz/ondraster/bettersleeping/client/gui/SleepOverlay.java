@@ -63,6 +63,9 @@ public class SleepOverlay extends OptionalGuiOverlay {
    public void renderTimeOverlay() {
       if (Config.enableRingWatch) {
          IInventory baubles = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
+         if (baubles == null)
+            return; // no idea why that happens? When baubles is installed the player should have it... maybe sync issue? meh
+
          for (int i = 0; i < baubles.getSizeInventory(); i++) {
             ItemStack itemStack = baubles.getStackInSlot(i);
             if (itemStack == null)
