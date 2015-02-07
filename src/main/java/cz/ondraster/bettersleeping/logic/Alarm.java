@@ -86,7 +86,8 @@ public class Alarm {
             player.wakeUpPlayer(false, false, true);
             if (playersWithAlarms.contains(player)) {
                //player.playSound(BetterSleeping.MODID + ":alarm", 0.5F, 2.0F);
-               world.playSoundEffect(player.posX, player.posY, player.posZ, BetterSleeping.MODID + ":alarm", 1F, 1F);
+               if (Config.enableAlarmSound)
+                  world.playSoundEffect(player.posX, player.posY, player.posZ, BetterSleeping.MODID + ":alarm", 1F, 1F);
             }
 
             if (Config.enableSleepCounter) {
