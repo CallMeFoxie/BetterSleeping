@@ -1,6 +1,5 @@
 def VersionMajor = 0
 def VersionMinor = 1
-def VersionRev = 0
 
 buildscript {
     repositories {
@@ -25,12 +24,12 @@ def VersionBuild = 0
 if (System.getenv("BUILD_NUMBER") != null)
     VersionBuild = System.getenv("BUILD_NUMBER")
 
-version = "1.7.10-${VersionMajor}.${VersionMinor}.${VersionRev}-${VersionBuild}"
+version = "1.7.10-${VersionMajor}.${VersionMinor}.${VersionBuild}"
 group = "cz.ondraster.bettersleeping"
 archivesBaseName = "BetterSleeping"
 
 minecraft {
-    version = "1.7.10-10.13.2.1277"
+    version = "1.7.10-10.13.2.1291"
     runDir = "run"
 }
 
