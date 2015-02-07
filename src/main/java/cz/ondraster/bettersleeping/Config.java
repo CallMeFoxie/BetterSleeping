@@ -26,6 +26,8 @@ public class Config {
 
    public static boolean enableRingWatch = true;
 
+   public static boolean enableAlarmSound = true;
+
    private Configuration cfg;
 
    public Config(String filename) {
@@ -50,6 +52,8 @@ public class Config {
       enableSleepyBar = cfg.getBoolean("enableSleepyBar", "gui", enableSleepyBar, "Whether to enable the sleepybar render");
 
       enableRingWatch = cfg.getBoolean("enableRingWatch", "gui", enableSleepCounter, "Enable Baubles Ring Watch");
+
+      enableAlarmSound = cfg.getBoolean("enableAlarmSound", "gui", enableAlarmSound, "Enable alarm sound when woken up");
 
       save();
    }

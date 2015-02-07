@@ -1,5 +1,6 @@
 package cz.ondraster.bettersleeping.logic;
 
+import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
@@ -14,13 +15,15 @@ import java.util.List;
 public class Alarm {
    public static final int MINUTES_IN_HOUR = 50;
 
-   public static List<TileEntityAlarm> getAllAlarms(List<EntityPlayer> playerEntities) {
+   public static List<TileEntityAlarm> getAllAlarms(List<EntityPlayer> playerEntities, List<EntityPlayer> outPlayers) {
       List alarms = new ArrayList<TileEntityAlarm>();
 
       for (EntityPlayer player : playerEntities) {
          TileEntityAlarm alarm = findNearbyAlarm(player);
-         if (alarm != null)
+         if (alarm != null) {
             alarms.add(alarm);
+            outPlayers.add(player);
+         }
       }
 
       return alarms;
@@ -43,7 +46,8 @@ public class Alarm {
 
    @SuppressWarnings("unchecked")
    public static void sleepWorld(World world) {
-      List<TileEntityAlarm> alarms = getAllAlarms(world.playerEntities);
+      List<EntityPlayer> playersWithAlarms = new ArrayList<EntityPlayer>();
+      List<TileEntityAlarm> alarms = getAllAlarms(world.playerEntities, playersWithAlarms);
       int mntTotal = 0;
       for (TileEntityAlarm alarm : alarms) {
          mntTotal += MinecraftTime.extrapolateTime(alarm.getHour(), alarm.getMinute()); // (minutes + hours * minutesInHour) * ticks
@@ -80,6 +84,10 @@ public class Alarm {
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
          if (player.isPlayerSleeping()) {
             player.wakeUpPlayer(false, false, true);
+            if (playersWithAlarms.contains(player)) {
+               //player.playSound(BetterSleeping.MODID + ":alarm", 0.5F, 2.0F);
+               world.playSoundEffect(player.posX, player.posY, player.posZ, BetterSleeping.MODID + ":alarm", 1F, 1F);
+            }
 
             if (Config.enableSleepCounter) {
                SleepingProperty property = SleepingProperty.get(player);
