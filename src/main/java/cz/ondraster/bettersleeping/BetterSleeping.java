@@ -79,6 +79,7 @@ public class BetterSleeping {
 
          }
 
+         // send update about tiredness to the client
          if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter > 1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
             Network.networkChannel.sendTo(new MessageUpdateTiredness(property.sleepCounter), (EntityPlayerMP) event.player);
             property.lastUpdate = property.sleepCounter;
@@ -86,17 +87,20 @@ public class BetterSleeping {
       }
 
       if (Config.enableDebuffs && Config.enableSleepCounter) {
+         // slowness debuff
          if (property.sleepCounter <= Config.slownessDebuff) {
             if (event.player.getActivePotionEffect(Potion.moveSlowdown) == null)
                event.player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), 20));
          }
 
+         // vision debuff
          if (property.sleepCounter <= Config.visionDebuff) {
             if (event.player.getActivePotionEffect(Potion.blindness) == null)
                event.player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 20));
          }
 
-         if (property.sleepCounter == 0 && !event.player.isPlayerSleeping()) {
+         // should fall asleep on the ground
+         if (property.sleepCounter == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
             event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
             event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
          }
