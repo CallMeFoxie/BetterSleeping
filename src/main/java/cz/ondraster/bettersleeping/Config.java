@@ -16,8 +16,7 @@ public class Config {
    public static double sleepPerSleptTick = 0.5;
    public static int maximumSleepCounter = 18000;
    public static boolean enableDebuffs = true;
-   public static int slownessDebuff = 200;
-   public static int visionDebuff = 100;
+
    public static boolean sleepOnGround = true;
    public static int guiOffsetLeft = 4;
    public static int guiOffsetTop = 8;
