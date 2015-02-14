@@ -38,7 +38,7 @@ public class Config {
    private Configuration cfg;
 
    public Config(String filename) {
-      cfg = new Configuration(new File(filename));
+      cfg = new Configuration(new File(filename), true);
       cfg.load();
       percentPeopleToSleep =
             cfg.get("config", "percentPeopleToSleep", percentPeopleToSleep, "How many players have to be in bed in a dimension to sleep.")
@@ -79,11 +79,13 @@ public class Config {
             Potion.blindness.getId(), Potion.hunger.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.wither.getId()};
 
       for (int i = 0; i < debuffNames.length; i++) {
+         String baseName = debuffNames[i];
          PlayerDebuff debuff = new PlayerDebuff();
-         debuff.potion = Potion.potionTypes[i];
-         debuff.enable = cfg.getBoolean("enable", debuffNames[i], defaultEnable[i], "Enable this debuff");
-         debuff.maxScale = cfg.getInt("maxScale", debuffNames[i], defaultMaxScale[i], 0, 5, "Maximum scaling of this debuff");
-         debuff.tiredLevel = cfg.getInt("level", debuffNames[i], defaultTiredLevel[i], 0, 23999, "At which level is this debuff applied");
+         debuff.potion = Potion.potionTypes[potionEffect[i]];
+         debuff.enable = cfg.getBoolean(baseName + "_enable", "debuffs", defaultEnable[i], "Enable this debuff");
+         debuff.maxScale = cfg.getInt(baseName + "_maxScale", "debuffs", defaultMaxScale[i], 0, 5, "Maximum scaling of this debuff");
+         debuff.tiredLevel = cfg.getInt(baseName + "_level", "debuffs", defaultTiredLevel[i], 0, 23999, "At which level is this debuff " +
+               "applied");
          debuffs[i] = debuff;
       }
 
