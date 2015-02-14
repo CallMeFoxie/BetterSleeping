@@ -36,7 +36,8 @@ public class BSTransformer implements IClassTransformer {
                      if (desc.equals("()Z") && (name.equals("isDaytime") || name.equals("w"))) {
                         super.visitInsn(Opcodes.POP);
                         mv.visitVarInsn(Opcodes.ALOAD, 0);
-                        super.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canNotSleep", "(Lnet/minecraft/entity/player/EntityPlayer;)Z", false);
+                        super.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canNotSleep",
+                              "(Lnet/minecraft/entity/player/EntityPlayer;)Z", false);
                      } else {
                         super.visitMethodInsn(opcode, owner, name, desc, itf);
                      }
@@ -48,7 +49,8 @@ public class BSTransformer implements IClassTransformer {
                   public void visitCode() {
                      mv.visitCode();
                      mv.visitVarInsn(Opcodes.ALOAD, 0);
-                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canSleep", "(Lnet/minecraft/entity/player/EntityPlayer;)Z", false);
+                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "cz/ondraster/bettersleeping/logic/Alarm", "canSleep",
+                           "(Lnet/minecraft/entity/player/EntityPlayer;)Z", false);
                      Label l1 = new Label();
                      mv.visitJumpInsn(Opcodes.IFEQ, l1);
                      mv.visitInsn(Opcodes.ICONST_1);

@@ -32,8 +32,12 @@ public class ProxyCommon {
       NetworkRegistry.INSTANCE.registerGuiHandler(BetterSleeping.INSTANCE, new GuiHandlers());
 
       // register recipes
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockClass.blockAlarm), "iii", "igi", "srs", 'i', Items.iron_ingot, 'g', Items.gold_nugget, 's', Blocks.stone, 'r', Items.redstone));
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemClass.itemRingWatch), "iii", "igi", "iri", 'i', Items.iron_ingot, 'g', Items.gold_nugget, 'r', Items.redstone));
+      GameRegistry.addRecipe(
+            new ShapedOreRecipe(new ItemStack(BlockClass.blockAlarm), "iii", "igi", "srs", 'i', Items.iron_ingot, 'g', Items.gold_nugget,
+                  's', Blocks.stone, 'r', Items.redstone));
+      GameRegistry.addRecipe(
+            new ShapedOreRecipe(new ItemStack(ItemClass.itemRingWatch), "iii", "igi", "iri", 'i', Items.iron_ingot, 'g', Items.gold_nugget,
+                  'r', Items.redstone));
    }
 
    public EntityPlayer getPlayer() {

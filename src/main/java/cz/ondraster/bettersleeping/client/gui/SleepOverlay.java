@@ -31,7 +31,8 @@ public class SleepOverlay extends OptionalGuiOverlay {
    @SubscribeEvent
    public void onGuiRender(RenderGameOverlayEvent event) {
 
-      if ((event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE && event.type != RenderGameOverlayEvent.ElementType.JUMPBAR) || event.isCancelable()) {
+      if ((event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE && event.type != RenderGameOverlayEvent.ElementType.JUMPBAR) ||
+            event.isCancelable()) {
          return;
       }
 
@@ -52,7 +53,8 @@ public class SleepOverlay extends OptionalGuiOverlay {
       ItemStack bed = new ItemStack(Items.bed);
 
       mgr.bindTexture(TextureMap.locationItemsTexture);
-      drawTexturedModelRectFromIcon(Config.guiOffsetLeft + BAR_WIDTH + 4, Config.guiOffsetTop - ((ICON_HEIGHT - BAR_HEIGHT) / 2), Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
+      drawTexturedModelRectFromIcon(Config.guiOffsetLeft + BAR_WIDTH + 4, Config.guiOffsetTop - ((ICON_HEIGHT - BAR_HEIGHT) / 2),
+            Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
 
       renderTimeOverlay();
 
@@ -73,7 +75,8 @@ public class SleepOverlay extends OptionalGuiOverlay {
 
             if (itemStack.getItem() == ItemClass.itemRingWatch) {
                MinecraftTime time = MinecraftTime.getFromWorldTime(Minecraft.getMinecraft().theWorld.getWorldTime());
-               drawCenteredString(Minecraft.getMinecraft().fontRenderer, time.toString(), Config.guiOffsetLeft + BAR_WIDTH / 2, Config.guiOffsetTop + 16, 0xFFFFFF);
+               drawCenteredString(Minecraft.getMinecraft().fontRenderer, time.toString(), Config.guiOffsetLeft + BAR_WIDTH / 2,
+                     Config.guiOffsetTop + 16, 0xFFFFFF);
                return;
             }
          }

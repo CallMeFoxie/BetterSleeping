@@ -98,6 +98,7 @@ public class GuiAlarm extends GuiContainer {
    }
 
    private void drawNumber(int number, int x, int y) {
-      drawTexturedModalRect(x + guiLeft, y + guiTop, NUMBER_OFFSET_X + (number * (NUMBER_WIDTH + 1)), NUMBER_OFFSET_Y, NUMBER_WIDTH, NUMBER_HEIGHT);
+      drawTexturedModalRect(x + guiLeft, y + guiTop, NUMBER_OFFSET_X + (number * (NUMBER_WIDTH + 1)), NUMBER_OFFSET_Y, NUMBER_WIDTH,
+            NUMBER_HEIGHT);
    }
 }

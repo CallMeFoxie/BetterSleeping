@@ -81,8 +81,10 @@ public class BetterSleeping {
          }
 
          // send update about tiredness to the client
-         if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter > 1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
-            Network.networkChannel.sendTo(new MessageUpdateTiredness(property.sleepCounter), (EntityPlayerMP) event.player);
+         if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter >
+               1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
+            Network.networkChannel
+                  .sendTo(new MessageUpdateTiredness(property.sleepCounter), (EntityPlayerMP) event.player);
             property.lastUpdate = property.sleepCounter;
          }
       }
@@ -92,9 +94,12 @@ public class BetterSleeping {
          for (int i = 0; i < Config.debuffs.length; i++) {
             if (Config.debuffs[i].enable && property.sleepCounter <= Config.debuffs[i].tiredLevel) {
                if (event.player.getActivePotionEffect(Config.debuffs[i].potion) == null) {
-                  int scale = (int) ((Config.debuffs[i].tiredLevel - property.sleepCounter) / (Config.debuffs[i].tiredLevel) * ((1 - Config.debuffs[i].maxScale) / Config.debuffs[i].maxScale));
+                  int scale =
+                        (int) ((Config.debuffs[i].tiredLevel - property.sleepCounter) / (Config.debuffs[i].tiredLevel) *
+                              ((1 - Config.debuffs[i].maxScale) / Config.debuffs[i].maxScale));
                   // TODO fix this maths, it is 100% broken but my brain is offline.
-                  event.player.addPotionEffect(new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
+                  event.player.addPotionEffect(
+                        new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
                }
             }
          }
