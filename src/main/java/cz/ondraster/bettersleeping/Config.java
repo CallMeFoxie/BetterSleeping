@@ -1,5 +1,6 @@
 package cz.ondraster.bettersleeping;
 
+import net.minecraft.potion.Potion;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -28,6 +29,12 @@ public class Config {
 
    public static boolean enableAlarmSound = true;
 
+   private static final int DEBUFF_COUNT = 9;
+   public static PlayerDebuff[] debuffs = new PlayerDebuff[DEBUFF_COUNT];
+
+   // private config stuff
+   public static final int POTION_DURATION = 40;
+
    private Configuration cfg;
 
    public Config(String filename) {
@@ -43,8 +50,7 @@ public class Config {
       sleepPerSleptTick = cfg.get("config", "sleepPerSleptTick", sleepPerSleptTick, "How much sleep is increased with every slept tick").getDouble();
       maximumSleepCounter = cfg.getInt("maximumSleepCounter", "config", maximumSleepCounter, 0, Integer.MAX_VALUE, "How much sleep counter you can reach before being denied sleep privilege.");
       enableDebuffs = cfg.getBoolean("enableDebuffs", "config", enableDebuffs, "Enable all debuffs related to exhaustion");
-      slownessDebuff = cfg.getInt("slownessDebuff", "config", slownessDebuff, 1, 23999, "Sleep level at which slowness debuff is applied");
-      visionDebuff = cfg.getInt("visionDebuff", "config", visionDebuff, 1, 23999, "Sleep level at which vision debuff is applied");
+
       sleepOnGround = cfg.getBoolean("sleepOnGround", "config", sleepOnGround, "sleep on ground when absolutely exhausted");
 
       guiOffsetLeft = cfg.getInt("guiOffsetLeft", "gui", guiOffsetLeft, 1, 256, "Left offset of the sleepybar");
@@ -54,6 +60,22 @@ public class Config {
       enableRingWatch = cfg.getBoolean("enableRingWatch", "gui", enableSleepCounter, "Enable Baubles Ring Watch");
 
       enableAlarmSound = cfg.getBoolean("enableAlarmSound", "gui", enableAlarmSound, "Enable alarm sound when woken up");
+
+      // debuffs
+      String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
+      boolean[] defaultEnable = {true, true, false, false, true, false, true, false, false};
+      int[] defaultTiredLevel = {800, 800, 800, 800, 800, 800, 800, 800, 800};
+      int[] defaultMaxScale = {3, 3, 1, 1, 2, 1, 3, 1, 1};
+      int[] potionEffect = {Potion.moveSlowdown.getId(), Potion.digSlowdown.getId(), Potion.harm.getId(), Potion.confusion.getId(), Potion.blindness.getId(), Potion.hunger.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.wither.getId()};
+
+      for (int i = 0; i < debuffNames.length; i++) {
+         PlayerDebuff debuff = new PlayerDebuff();
+         debuff.potion = Potion.potionTypes[i];
+         debuff.enable = cfg.getBoolean("enable", debuffNames[i], defaultEnable[i], "Enable this debuff");
+         debuff.maxScale = cfg.getInt("maxScale", debuffNames[i], defaultMaxScale[i], 0, 5, "Maximum scaling of this debuff");
+         debuff.tiredLevel = cfg.getInt("level", debuffNames[i], defaultTiredLevel[i], 0, 23999, "At which level is this debuff applied");
+         debuffs[i] = debuff;
+      }
 
       save();
    }

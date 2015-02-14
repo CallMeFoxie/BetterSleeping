@@ -16,7 +16,6 @@ import cz.ondraster.bettersleeping.player.SleepingProperty;
 import cz.ondraster.bettersleeping.proxy.ProxyCommon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.WorldServer;
@@ -35,6 +34,8 @@ public class BetterSleeping {
 
    @Mod.Instance
    public static BetterSleeping INSTANCE;
+
+   private int ticksSinceUpdate = 0;
 
 
    @EventHandler
@@ -86,17 +87,16 @@ public class BetterSleeping {
          }
       }
 
-      if (Config.enableDebuffs && Config.enableSleepCounter) {
-         // slowness debuff
-         if (property.sleepCounter <= Config.slownessDebuff) {
-            if (event.player.getActivePotionEffect(Potion.moveSlowdown) == null)
-               event.player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), 20));
-         }
-
-         // vision debuff
-         if (property.sleepCounter <= Config.visionDebuff) {
-            if (event.player.getActivePotionEffect(Potion.blindness) == null)
-               event.player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 20));
+      if (Config.enableDebuffs && Config.enableSleepCounter && ticksSinceUpdate > 20) {
+         // check for debuffs
+         for (int i = 0; i < Config.debuffs.length; i++) {
+            if (Config.debuffs[i].enable && property.sleepCounter <= Config.debuffs[i].tiredLevel) {
+               if (event.player.getActivePotionEffect(Config.debuffs[i].potion) == null) {
+                  int scale = (int) ((Config.debuffs[i].tiredLevel - property.sleepCounter) / (Config.debuffs[i].tiredLevel) * ((1 - Config.debuffs[i].maxScale) / Config.debuffs[i].maxScale));
+                  // TODO fix this maths, it is 100% broken but my brain is offline.
+                  event.player.addPotionEffect(new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
+               }
+            }
          }
 
          // should fall asleep on the ground
@@ -104,7 +104,11 @@ public class BetterSleeping {
             event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
             event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
          }
+
+         ticksSinceUpdate = 0;
       }
+
+      ticksSinceUpdate++;
    }
 
    @SubscribeEvent
