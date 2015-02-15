@@ -28,8 +28,7 @@ public class Config {
 
    public static boolean enableAlarmSound = true;
 
-   private static final int DEBUFF_COUNT = 9;
-   public static PlayerDebuff[] debuffs = new PlayerDebuff[DEBUFF_COUNT];
+   public static PlayerDebuff[] debuffs;
 
    // private config stuff
    public static final int POTION_DURATION = 40;
@@ -76,6 +75,8 @@ public class Config {
       int[] defaultMaxScale = {3, 3, 1, 1, 2, 1, 3, 1, 1};
       int[] potionEffect = {Potion.moveSlowdown.getId(), Potion.digSlowdown.getId(), Potion.harm.getId(), Potion.confusion.getId(),
             Potion.blindness.getId(), Potion.hunger.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.wither.getId()};
+
+      debuffs = new PlayerDebuff[debuffNames.length];
 
       for (int i = 0; i < debuffNames.length; i++) {
          String baseName = debuffNames[i];
