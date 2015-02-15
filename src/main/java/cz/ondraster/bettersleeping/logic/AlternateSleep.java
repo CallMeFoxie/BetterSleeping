@@ -46,9 +46,16 @@ public class AlternateSleep {
       return new ChunkCoordinates((int) ox, (int) oy, (int) oz);
    }
 
+   private static boolean tickingWorld = false;
+
    public static void tickWorldCustom(WorldServer worldServer, long ticks) {
       CrashReport report;
       CrashReportCategory category;
+
+      if (tickingWorld)
+         return;
+
+      tickingWorld = true;
 
       for (long i = 0; i < ticks; i++) {
          FMLCommonHandler.instance().onPreWorldTick(worldServer);
@@ -94,5 +101,7 @@ public class AlternateSleep {
 
          FMLCommonHandler.instance().onPostWorldTick(worldServer);
       }
+
+      tickingWorld = false;
    }
 }
