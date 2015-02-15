@@ -31,6 +31,7 @@ archivesBaseName = "BetterSleeping"
 minecraft {
     version = "1.7.10-10.13.2.1291"
     runDir = "run"
+    replace '@VERSION@', project.version
 }
 
 dependencies {
