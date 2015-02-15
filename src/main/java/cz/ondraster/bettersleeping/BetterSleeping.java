@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
@@ -89,24 +90,30 @@ public class BetterSleeping {
          }
       }
 
+      if (property == null)
+         return; // safety, should not happen except maybe some edge cases
+
       if (Config.enableDebuffs && Config.enableSleepCounter && ticksSinceUpdate > 20) {
          // check for debuffs
          for (int i = 0; i < Config.debuffs.length; i++) {
-            if (Config.debuffs[i].enable && property.sleepCounter <= Config.debuffs[i].tiredLevel) {
-               if (event.player.getActivePotionEffect(Config.debuffs[i].potion) == null) {
-                  int scale =
-                        (int) ((Config.debuffs[i].tiredLevel - property.sleepCounter) / (Config.debuffs[i].tiredLevel) *
-                              ((1 - Config.debuffs[i].maxScale) / Config.debuffs[i].maxScale));
-                  // TODO fix this maths, it is 100% broken but my brain is offline.
-                  event.player.addPotionEffect(
-                        new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
-               }
+            if (Config.debuffs[i].enable && property.sleepCounter < Config.debuffs[i].tiredLevel) {
+               double percentTired = (Config.debuffs[i].tiredLevel - property.sleepCounter) / (double) (Config.debuffs[i].tiredLevel);
+               int scale = (int) Math.ceil(percentTired * Config.debuffs[i].maxScale) - 1;
+               event.player.addPotionEffect(
+                     new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
             }
          }
 
          // should fall asleep on the ground
          if (property.sleepCounter == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
             event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
+
+            if (Config.enablePositionReset) {
+               ChunkCoordinates chunkCoordinates = AlternateSleep.getSafePosition(event.player.worldObj, event.player.posX, event.player
+                     .posY, event.player.posZ);
+               event.player.setPosition(chunkCoordinates.posX + 0.5f, chunkCoordinates.posY + 0.1f, chunkCoordinates.posZ + 0.5f);
+            }
+
             event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
          }
 

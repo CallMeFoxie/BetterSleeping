@@ -16,6 +16,7 @@ public class Config {
    public static double sleepPerSleptTick = 0.5;
    public static int maximumSleepCounter = 18000;
    public static boolean enableDebuffs = true;
+   public static boolean enablePositionReset = true;
 
    public static boolean sleepOnGround = true;
    public static int guiOffsetLeft = 4;
@@ -32,6 +33,7 @@ public class Config {
 
    // private config stuff
    public static final int POTION_DURATION = 40;
+
 
    private Configuration cfg;
 
@@ -67,6 +69,9 @@ public class Config {
       enableRingWatch = cfg.getBoolean("enableRingWatch", "gui", enableSleepCounter, "Enable Baubles Ring Watch");
 
       enableAlarmSound = cfg.getBoolean("enableAlarmSound", "gui", enableAlarmSound, "Enable alarm sound when woken up");
+
+      enablePositionReset = cfg.getBoolean("enablePositionReset", "config", enablePositionReset, "Enable position reset when falling " +
+            "asleep on the ground [EXPERIMENTAL]");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
