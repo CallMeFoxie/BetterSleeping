@@ -18,6 +18,8 @@ public class Config {
    public static boolean enableDebuffs = true;
    public static boolean enablePositionReset = true;
 
+   public static boolean enableAlarmClock = true;
+
    public static boolean sleepOnGround = true;
    public static int guiOffsetLeft = 4;
    public static int guiOffsetTop = 8;
@@ -77,6 +79,8 @@ public class Config {
 
       enableSleepTicks = cfg.getBoolean("enableSleepTicks", "config", enableSleepTicks, "Enable world tick simulation while asleep " +
             "[CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");
+
+      enableAlarmClock = cfg.getBoolean("enableAlarmClock", "config", enableAlarmClock, "Enable Alarm clock");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
