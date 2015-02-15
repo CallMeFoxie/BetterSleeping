@@ -35,7 +35,7 @@ public class BetterSleepingAPI {
       return removed;
    }
 
-   public static SleepingProperty getProperty(EntityPlayer player) {
+   public static SleepingProperty getSleepingProperty(EntityPlayer player) {
       return SleepingProperty.get(player);
    }
 }

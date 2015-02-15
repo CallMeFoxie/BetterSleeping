@@ -1,5 +1,5 @@
 def VersionMajor = 0
-def VersionMinor = 2
+def VersionMinor = 3
 
 buildscript {
     repositories {
@@ -37,6 +37,14 @@ minecraft {
 dependencies {
 }
 
+sourceSets {
+    bsapi {
+        java {
+            srcDir 'src/main/java/cz/ondraster/bettersleeping/api'
+        }
+    }
+}
+
 processResources
         {
             inputs.property "version", project.version
@@ -60,9 +68,19 @@ jar {
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = 'deobf'
+    classifier = 'deobf'
+}
+
+task apiJar(type: Jar) {
+    from(sourceSets.main.java) {
+        include "cz/ondraster/bettersleeping/api/"
+    }
+    classifier = 'api'
 }
 
 artifacts {
     archives deobfJar
+    archives apiJar
 }
+
+build.dependsOn deobfJar, apiJar
