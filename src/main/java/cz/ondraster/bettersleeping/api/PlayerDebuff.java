@@ -1,4 +1,4 @@
-package cz.ondraster.bettersleeping;
+package cz.ondraster.bettersleeping.api;
 
 import net.minecraft.potion.Potion;
 

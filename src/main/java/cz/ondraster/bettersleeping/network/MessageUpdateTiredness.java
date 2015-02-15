@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cz.ondraster.bettersleeping.BetterSleeping;
-import cz.ondraster.bettersleeping.player.SleepingProperty;
+import cz.ondraster.bettersleeping.api.SleepingProperty;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 

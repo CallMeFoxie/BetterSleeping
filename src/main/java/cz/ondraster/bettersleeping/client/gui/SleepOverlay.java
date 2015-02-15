@@ -7,7 +7,7 @@ import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.item.ItemClass;
 import cz.ondraster.bettersleeping.logic.MinecraftTime;
-import cz.ondraster.bettersleeping.player.SleepingProperty;
+import cz.ondraster.bettersleeping.api.SleepingProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;

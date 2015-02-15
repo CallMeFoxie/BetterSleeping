@@ -1,4 +1,4 @@
-package cz.ondraster.bettersleeping.player;
+package cz.ondraster.bettersleeping.api;
 
 import cz.ondraster.bettersleeping.Config;
 import net.minecraft.entity.Entity;

@@ -7,12 +7,15 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
+import cz.ondraster.bettersleeping.api.PlayerDebuff;
+import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.logic.AlternateSleep;
 import cz.ondraster.bettersleeping.network.MessageUpdateTiredness;
 import cz.ondraster.bettersleeping.network.Network;
-import cz.ondraster.bettersleeping.player.SleepingProperty;
+import cz.ondraster.bettersleeping.api.SleepingProperty;
 import cz.ondraster.bettersleeping.proxy.ProxyCommon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,8 +23,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+
+import java.util.List;
 
 @Mod(modid = BetterSleeping.MODID, name = BetterSleeping.NAME, version = BetterSleeping.VERSION)
 public class BetterSleeping {
@@ -95,26 +101,31 @@ public class BetterSleeping {
 
       if (Config.enableDebuffs && Config.enableSleepCounter && ticksSinceUpdate > 20) {
          // check for debuffs
-         for (int i = 0; i < Config.debuffs.length; i++) {
-            if (Config.debuffs[i].enable && property.sleepCounter < Config.debuffs[i].tiredLevel) {
-               double percentTired = (Config.debuffs[i].tiredLevel - property.sleepCounter) / (double) (Config.debuffs[i].tiredLevel);
-               int scale = (int) Math.ceil(percentTired * Config.debuffs[i].maxScale) - 1;
+         List<PlayerDebuff> debuffs = BetterSleepingAPI.getDebuffs();
+         for (PlayerDebuff debuff : debuffs) {
+            if (debuff.enable && property.sleepCounter < debuff.tiredLevel) {
+               double percentTired = (debuff.tiredLevel - property.sleepCounter) / (double) (debuff.tiredLevel);
+               int scale = (int) Math.ceil(percentTired * debuff.maxScale) - 1;
                event.player.addPotionEffect(
-                     new PotionEffect(Config.debuffs[i].potion.getId(), Config.POTION_DURATION, scale));
+                     new PotionEffect(debuff.potion.getId(), Config.POTION_DURATION, scale));
             }
          }
 
          // should fall asleep on the ground
          if (property.sleepCounter == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
-            event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
+            boolean result = MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.SleepOnGround(event.player));
 
-            if (Config.enablePositionReset) {
-               ChunkCoordinates chunkCoordinates = AlternateSleep.getSafePosition(event.player.worldObj, event.player.posX, event.player
-                     .posY, event.player.posZ);
-               event.player.setPosition(chunkCoordinates.posX + 0.5f, chunkCoordinates.posY + 0.1f, chunkCoordinates.posZ + 0.5f);
+            if (!result) {
+               event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
+
+               if (Config.enablePositionReset) {
+                  ChunkCoordinates chunkCoordinates = AlternateSleep.getSafePosition(event.player.worldObj, event.player.posX, event.player
+                        .posY, event.player.posZ);
+                  event.player.setPosition(chunkCoordinates.posX + 0.5f, chunkCoordinates.posY + 0.1f, chunkCoordinates.posZ + 0.5f);
+               }
+
+               event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
             }
-
-            event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
          }
 
          ticksSinceUpdate = 0;

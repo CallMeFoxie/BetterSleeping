@@ -2,13 +2,15 @@ package cz.ondraster.bettersleeping.logic;
 
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
-import cz.ondraster.bettersleeping.player.SleepingProperty;
+import cz.ondraster.bettersleeping.api.SleepingProperty;
+import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,8 @@ public class Alarm {
 
    @SuppressWarnings("unchecked")
    public static void sleepWorld(World world) {
+      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Pre(world));
+
       List<EntityPlayer> playersWithAlarms = new ArrayList<EntityPlayer>();
       List<TileEntityAlarm> alarms = getAllAlarms(world.playerEntities, playersWithAlarms);
       int mntTotal = 0;
@@ -109,6 +113,8 @@ public class Alarm {
       // possibly reset weather?
       if (Config.chanceToStopRain >= world.rand.nextDouble())
          world.provider.resetRainAndThunder();
+
+      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Post(world));
    }
 
    public static boolean canNotSleep(EntityPlayer player) {

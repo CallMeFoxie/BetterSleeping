@@ -1,5 +1,7 @@
 package cz.ondraster.bettersleeping;
 
+import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
+import cz.ondraster.bettersleeping.api.PlayerDebuff;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.common.config.Configuration;
 
@@ -27,7 +29,6 @@ public class Config {
 
 
    // debuff related stuff
-   public static PlayerDebuff[] debuffs;
    public static boolean enableDebuffs = true;
    public static boolean sleepOnGround = true;
 
@@ -96,7 +97,7 @@ public class Config {
       int[] potionEffect = {Potion.moveSlowdown.getId(), Potion.digSlowdown.getId(), Potion.harm.getId(), Potion.confusion.getId(),
             Potion.blindness.getId(), Potion.hunger.getId(), Potion.weakness.getId(), Potion.poison.getId(), Potion.wither.getId()};
 
-      debuffs = new PlayerDebuff[debuffNames.length];
+      PlayerDebuff[] debuffs = new PlayerDebuff[debuffNames.length];
 
       for (int i = 0; i < debuffNames.length; i++) {
          String baseName = debuffNames[i];
@@ -107,6 +108,10 @@ public class Config {
          debuff.tiredLevel = cfg.getInt(baseName + "_level", "debuffs", defaultTiredLevel[i], 0, 23999, "At which level is this debuff " +
                "applied");
          debuffs[i] = debuff;
+      }
+
+      for (PlayerDebuff debuff : debuffs) {
+         BetterSleepingAPI.addDebuff(debuff);
       }
 
       save();
