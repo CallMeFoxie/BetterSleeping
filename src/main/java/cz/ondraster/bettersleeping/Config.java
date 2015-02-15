@@ -6,38 +6,44 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 
 public class Config {
+   // config
    public static int defaultWakeUpTime = 0;
    public static int oversleepWithoutAlarm = 2000;
    public static int oversleepWithAlarm = 400;
-   public static double chanceToStopRain = 0.9;
    public static boolean enableSleepCounter = true;
    public static long spawnSleepCounter = 18000;
    public static int ticksPerSleepCounter = 4;
    public static double sleepPerSleptTick = 0.5;
    public static int maximumSleepCounter = 18000;
-   public static boolean enableDebuffs = true;
-   public static boolean enablePositionReset = true;
-
-   public static boolean enableAlarmClock = true;
-
-   public static boolean sleepOnGround = true;
-   public static int guiOffsetLeft = 4;
-   public static int guiOffsetTop = 8;
-   public static boolean enableSleepyBar = true;
 
    public static double percentPeopleToSleep = 0.5;
 
    public static boolean enableRingWatch = true;
+   public static boolean enableAlarmClock = true;
 
    public static boolean enableAlarmSound = true;
 
    public static boolean enableSleepTicks = false;
 
+
+   // debuff related stuff
    public static PlayerDebuff[] debuffs;
+   public static boolean enableDebuffs = true;
+   public static boolean sleepOnGround = true;
+
+   // tweaks
+   public static boolean enablePositionReset = true;
+   public static double chanceToStopRain = 0.9;
+
+
+   // gui
+   public static int guiOffsetLeft = 4;
+   public static int guiOffsetTop = 8;
+   public static boolean enableSleepyBar = true;
+
 
    // private config stuff
    public static final int POTION_DURATION = 40;
-
 
    private Configuration cfg;
 
