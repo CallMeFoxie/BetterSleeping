@@ -29,6 +29,8 @@ public class Config {
 
    public static boolean enableAlarmSound = true;
 
+   public static boolean enableSleepTicks = false;
+
    public static PlayerDebuff[] debuffs;
 
    // private config stuff
@@ -72,6 +74,9 @@ public class Config {
 
       enablePositionReset = cfg.getBoolean("enablePositionReset", "config", enablePositionReset, "Enable position reset when falling " +
             "asleep on the ground [EXPERIMENTAL]");
+
+      enableSleepTicks = cfg.getBoolean("enableSleepTicks", "config", enableSleepTicks, "Enable world tick simulation while asleep " +
+            "[CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};

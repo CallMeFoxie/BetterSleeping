@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,8 @@ public class Alarm {
 
       MinecraftTime time = MinecraftTime.getFromWorldTime(world.getWorldTime());
 
+      long sleptTime = world.getWorldTime() - curTime;
+
       // reset all players
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
          if (player.isPlayerSleeping()) {
@@ -97,6 +100,10 @@ public class Alarm {
          }
 
          player.addChatMessage(new ChatComponentTranslation("msg.wakeUp", time.toString()));
+      }
+
+      if (Config.enableSleepTicks && world instanceof WorldServer) {
+         AlternateSleep.tickWorldCustom((WorldServer) world, sleptTime);
       }
 
       // possibly reset weather?
