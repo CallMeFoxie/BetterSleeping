@@ -1,5 +1,6 @@
 package cz.ondraster.bettersleeping.api;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 
@@ -13,6 +14,13 @@ public class BetterSleepingAPI {
    public static void addDebuff(PlayerDebuff debuff) {
       if (debuffs == null)
          debuffs = new ArrayList<PlayerDebuff>();
+
+      if (debuff.tiredLevel == 0) {
+         FMLLog.warning("[Better Sleeping API] Tried adding debuff with tired level of 0. That is not how it is meant to be used! Use " +
+               "enabled=0 instead! Skipping this debuff...");
+         return;
+      }
+
 
       debuffs.add(debuff);
    }
