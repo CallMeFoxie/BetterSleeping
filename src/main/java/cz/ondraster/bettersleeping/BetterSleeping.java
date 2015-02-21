@@ -87,6 +87,10 @@ public class BetterSleeping {
 
          }
 
+         if (event.player.isPlayerSleeping() && Config.giveSleepCounterOnSleep > 0) {
+            property.sleepCounter += Config.giveSleepCounterOnSleep;
+         }
+
          // send update about tiredness to the client
          if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter >
                1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {

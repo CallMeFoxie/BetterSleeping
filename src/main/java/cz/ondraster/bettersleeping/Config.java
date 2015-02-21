@@ -45,6 +45,7 @@ public class Config {
 
    // private config stuff
    public static final int POTION_DURATION = 40;
+   public static int giveSleepCounterOnSleep = ticksPerSleepCounter;
 
    private Configuration cfg;
 
@@ -88,6 +89,9 @@ public class Config {
             "[CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");
 
       enableAlarmClock = cfg.getBoolean("enableAlarmClock", "config", enableAlarmClock, "Enable Alarm clock");
+
+      giveSleepCounterOnSleep = cfg.getInt("giveSleepCounterOnSleep", "config", giveSleepCounterOnSleep, 0, 23999, "How many sleep ticks " +
+            "are given to player when lying in bed");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
