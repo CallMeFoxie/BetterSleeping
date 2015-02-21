@@ -123,7 +123,7 @@ public class Alarm {
 
    public static boolean canSleep(EntityPlayer player) {
       SleepingProperty property = SleepingProperty.get(player);
-      if (property.sleepCounter == 0 && Config.enableDebuffs && Config.enableSleepCounter && Config.sleepOnGround) {
+      if (/*property.sleepCounter == 0 && */Config.enableDebuffs && Config.enableSleepCounter && Config.sleepOnGround) {
          return true;
       }
 
