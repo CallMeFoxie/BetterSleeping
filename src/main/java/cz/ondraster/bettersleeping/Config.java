@@ -46,6 +46,7 @@ public class Config {
    // private config stuff
    public static final int POTION_DURATION = 40;
    public static int giveSleepCounterOnSleep = ticksPerSleepCounter;
+   public static boolean enableSleepMessage = true;
 
    private Configuration cfg;
 
@@ -68,7 +69,7 @@ public class Config {
             "How many player ticks between decreasing sleep counter");
       sleepPerSleptTick =
             cfg.get("config", "sleepPerSleptTick", sleepPerSleptTick, "How much sleep is increased with every slept tick").getDouble();
-      maximumSleepCounter = cfg.getInt("maximumSleepCounter", "config", maximumSleepCounter, 0, Integer.MAX_VALUE,
+      maximumSleepCounter = cfg.getInt("maximumSleepCounter", "config", maximumSleepCounter, 1, Integer.MAX_VALUE,
             "How much sleep counter you can reach before being denied sleep privilege.");
       enableDebuffs = cfg.getBoolean("enableDebuffs", "config", enableDebuffs, "Enable all debuffs related to exhaustion");
 
@@ -92,6 +93,9 @@ public class Config {
 
       giveSleepCounterOnSleep = cfg.getInt("giveSleepCounterOnSleep", "config", giveSleepCounterOnSleep, 0, 23999, "How many sleep ticks " +
             "are given to player when lying in bed");
+
+      enableSleepMessage = cfg.getBoolean("enableSleepMessage", "config", enableSleepMessage, "Enable message informing players about how" +
+            " many are asleep.");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};

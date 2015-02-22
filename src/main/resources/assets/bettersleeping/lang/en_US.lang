@@ -3,3 +3,5 @@ msg.notTired=You are not tired right now.
 msg.tooTired=You are too tired to continue. You just have to sleep now...
 msg.wakeUp=Wake up! It is %s
 item.ringwatch.name=Wristwatch on a Ring
+msg.playersSleeping=%s%% of players are sleeping. Hop into bed and join them!
+msg.goodNight=Good night!

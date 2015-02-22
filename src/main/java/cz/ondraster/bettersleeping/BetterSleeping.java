@@ -163,6 +163,10 @@ public class BetterSleeping {
       int sleeping = AlternateSleep.getSleepingPeopleInWorld(event.entityPlayer.worldObj);
       if ((double) sleeping / event.entityPlayer.worldObj.playerEntities.size() >= Config.percentPeopleToSleep) {
          Alarm.sleepWorld(event.entityPlayer.worldObj);
+      } else {
+         if (Config.enableSleepMessage)
+            event.entityPlayer.addChatMessage(new ChatComponentTranslation("msg.playersSleeping", ((double) sleeping) / event.entityPlayer
+                  .worldObj.playerEntities.size()));
       }
    }
 }
