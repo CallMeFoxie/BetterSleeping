@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
 import cz.ondraster.bettersleeping.api.PlayerDebuff;
 import cz.ondraster.bettersleeping.api.SleepingProperty;
@@ -20,8 +21,10 @@ import cz.ondraster.bettersleeping.proxy.ProxyCommon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -161,15 +164,14 @@ public class BetterSleeping {
       if (event.entityPlayer.worldObj.isRemote)
          return;
 
-      int sleeping = AlternateSleep.getSleepingPeopleInWorld(event.entityPlayer.worldObj);
-      if ((double) sleeping / event.entityPlayer.worldObj.playerEntities.size() >= Config.percentPeopleToSleep) {
-         Alarm.sleepWorld(event.entityPlayer.worldObj);
-      } else {
-         if (Config.enableSleepMessage) {
-            for (EntityPlayer player : (List<EntityPlayer>) event.entityPlayer.worldObj.playerEntities)
-               player.addChatMessage(new ChatComponentTranslation("msg.playersSleeping",
-                     Math.floor((double) sleeping / event.entityPlayer.worldObj.playerEntities.size()) * 100));
-         }
+      AlternateSleep.trySleepingWorld(event.entityPlayer.worldObj);
+   }
+
+   @SubscribeEvent
+   public void onPlayerLeaveServer(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
+      for (World world : MinecraftServer.getServer().worldServers) {
+         AlternateSleep.trySleepingWorld(world);
       }
    }
+
 }

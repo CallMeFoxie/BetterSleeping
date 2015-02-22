@@ -2,10 +2,12 @@ package cz.ondraster.bettersleeping.logic;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cz.ondraster.bettersleeping.Config;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
@@ -103,5 +105,18 @@ public class AlternateSleep {
       }
 
       tickingWorld = false;
+   }
+
+   public static void trySleepingWorld(World world) {
+      int sleeping = AlternateSleep.getSleepingPeopleInWorld(world);
+      if ((double) sleeping / world.playerEntities.size() >= Config.percentPeopleToSleep) {
+         Alarm.sleepWorld(world);
+      } else if (sleeping > 0) {
+         if (Config.enableSleepMessage) {
+            for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities)
+               player.addChatMessage(new ChatComponentTranslation("msg.playersSleeping",
+                     Math.floor((double) sleeping / world.playerEntities.size()) * 100));
+         }
+      }
    }
 }
