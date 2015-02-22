@@ -144,6 +144,7 @@ public class BetterSleeping {
          SleepingProperty.register((EntityPlayer) event.entity);
    }
 
+   @SuppressWarnings("unchecked")
    @SubscribeEvent
    public void onPlayerSleepInBed(PlayerSleepInBedEvent event) {
       if (Config.enableSleepCounter) {
@@ -164,9 +165,11 @@ public class BetterSleeping {
       if ((double) sleeping / event.entityPlayer.worldObj.playerEntities.size() >= Config.percentPeopleToSleep) {
          Alarm.sleepWorld(event.entityPlayer.worldObj);
       } else {
-         if (Config.enableSleepMessage)
-            event.entityPlayer.addChatMessage(new ChatComponentTranslation("msg.playersSleeping", ((double) sleeping) / event.entityPlayer
-                  .worldObj.playerEntities.size()));
+         if (Config.enableSleepMessage) {
+            for (EntityPlayer player : (List<EntityPlayer>) event.entityPlayer.worldObj.playerEntities)
+               player.addChatMessage(new ChatComponentTranslation("msg.playersSleeping",
+                     Math.floor((double) sleeping / event.entityPlayer.worldObj.playerEntities.size()) * 100));
+         }
       }
    }
 }
