@@ -15,6 +15,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeModContainer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class AlternateSleep {
 
       tickingWorld = true;
 
+      List<TileEntity> TEsToRemove = new ArrayList<TileEntity>();
+
       for (long i = 0; i < ticks; i++) {
          FMLCommonHandler.instance().onPreWorldTick(worldServer);
 
@@ -88,18 +91,23 @@ public class AlternateSleep {
             }
 
             if (tileentity.isInvalid()) {
-               iterator.remove();
+               TEsToRemove.add(tileentity);
+            }
+         }
 
-               if (worldServer.checkChunksExist(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, tileentity.xCoord, tileentity
-                     .yCoord, tileentity.zCoord)) {
-                  Chunk chunk = worldServer.getChunkFromChunkCoords(tileentity.xCoord >> 4, tileentity.zCoord >> 4);
+         for (TileEntity te : TEsToRemove) {
+            worldServer.loadedTileEntityList.remove(te);
 
-                  if (chunk != null) {
-                     chunk.removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
-                  }
+            if (worldServer.checkChunksExist(te.xCoord, te.yCoord, te.zCoord, te.xCoord, te.yCoord, te.zCoord)) {
+               Chunk chunk = worldServer.getChunkFromChunkCoords(te.xCoord >> 4, te.zCoord >> 4);
+
+               if (chunk != null) {
+                  chunk.removeInvalidTileEntity(te.xCoord & 15, te.yCoord, te.zCoord & 15);
                }
             }
          }
+
+         TEsToRemove = new ArrayList<TileEntity>();
 
          FMLCommonHandler.instance().onPostWorldTick(worldServer);
       }
