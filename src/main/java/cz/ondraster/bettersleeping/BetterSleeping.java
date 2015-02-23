@@ -121,15 +121,19 @@ public class BetterSleeping {
             boolean result = MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.SleepOnGround(event.player));
 
             if (!result) {
-               event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
+               EntityPlayer.EnumStatus sleepResult = event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event
+                     .player.posZ);
 
-               if (Config.enablePositionReset) {
-                  ChunkCoordinates chunkCoordinates = AlternateSleep.getSafePosition(event.player.worldObj, event.player.posX, event.player
-                        .posY, event.player.posZ);
-                  event.player.setPosition(chunkCoordinates.posX + 0.5f, chunkCoordinates.posY + 0.1f, chunkCoordinates.posZ + 0.5f);
+               if (sleepResult == EntityPlayer.EnumStatus.OK) {
+                  if (Config.enablePositionReset) {
+                     ChunkCoordinates chunkCoordinates =
+                           AlternateSleep.getSafePosition(event.player.worldObj, event.player.posX, event.player
+                                 .posY, event.player.posZ);
+                     event.player.setPosition(chunkCoordinates.posX + 0.5f, chunkCoordinates.posY + 0.1f, chunkCoordinates.posZ + 0.5f);
+                  }
+
+                  event.player.addChatMessage(new ChatComponentTranslation("msg.tooTired"));
                }
-
-               event.player.sleepInBedAt((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
             }
          }
 
