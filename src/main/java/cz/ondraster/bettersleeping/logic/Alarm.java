@@ -114,7 +114,7 @@ public class Alarm {
       if (Config.chanceToStopRain >= world.rand.nextDouble())
          world.provider.resetRainAndThunder();
 
-      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Post(world));
+      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Post(world, sleptTime));
    }
 
    public static boolean canNotSleep(EntityPlayer player) {

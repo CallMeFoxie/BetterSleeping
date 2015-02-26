@@ -25,8 +25,15 @@ public class WorldSleepEvent extends WorldEvent {
     * This event is NOT cancelable.
     */
    public static class Post extends WorldSleepEvent {
-      public Post(World world) {
+      private final long sleptTicks;
+
+      public Post(World world, long sleptTicks) {
          super(world);
+         this.sleptTicks = sleptTicks;
+      }
+
+      public long getSleptTicks() {
+         return sleptTicks;
       }
    }
 
