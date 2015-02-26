@@ -62,6 +62,9 @@ public class BetterSleeping {
       if (!(event.world instanceof WorldServer))
          return;
 
+      if (event.phase != TickEvent.Phase.START)
+         return;
+
       WorldServer world = (WorldServer) event.world;
 
       if (world.areAllPlayersAsleep()) {
@@ -73,7 +76,7 @@ public class BetterSleeping {
    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
       if (event.phase != TickEvent.Phase.START)
          return;
-      
+
       SleepingProperty property = null;
       if (event.player.worldObj.isRemote) {
          SleepOverlay.playerProperty = SleepingProperty.get(event.player);
