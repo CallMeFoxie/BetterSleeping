@@ -1,9 +1,11 @@
 package cz.ondraster.bettersleeping;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -13,6 +15,7 @@ import cz.ondraster.bettersleeping.api.PlayerDebuff;
 import cz.ondraster.bettersleeping.api.SleepingProperty;
 import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
+import cz.ondraster.bettersleeping.compat.CompatibilityMorpheus;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.logic.AlternateSleep;
 import cz.ondraster.bettersleeping.network.MessageUpdateTiredness;
@@ -55,6 +58,13 @@ public class BetterSleeping {
    @EventHandler
    public void init(FMLInitializationEvent event) {
       proxy.init(event);
+   }
+
+   @EventHandler
+   public void postinit(FMLPostInitializationEvent event) {
+      if (Loader.isModLoaded("Morpheus")) {
+         CompatibilityMorpheus morpheus = new CompatibilityMorpheus();
+      }
    }
 
    @SubscribeEvent
