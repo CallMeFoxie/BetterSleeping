@@ -191,6 +191,9 @@ public class BetterSleeping {
       if (event.player.worldObj.isRemote)
          return;
 
+      if (Config.percentPeopleToSleep > 1)
+         return;
+
       AlternateSleep.trySleepingWorld(event.player.worldObj, true);
    }
 

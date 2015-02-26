@@ -121,10 +121,12 @@ public class AlternateSleep {
 
    public static void trySleepingWorld(World world, boolean subtractDisconnecting) {
       int sleeping = AlternateSleep.getSleepingPeopleInWorld(world);
-      if (subtractDisconnecting)
-         sleeping--;
+      int total = world.playerEntities.size();
 
-      if ((double) sleeping / world.playerEntities.size() >= Config.percentPeopleToSleep) {
+      if (subtractDisconnecting)
+         total--;
+
+      if ((double) sleeping / total >= Config.percentPeopleToSleep) {
          Alarm.sleepWorld(world);
       } else if (sleeping > 0) {
          if (Config.enableSleepMessage) {
