@@ -1,6 +1,7 @@
 package cz.ondraster.bettersleeping.compat;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Optional;
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.logic.Alarm;
@@ -9,6 +10,7 @@ import net.minecraft.world.World;
 import net.quetzi.morpheus.api.IMorpheusAPI;
 import net.quetzi.morpheus.api.INewDayHandler;
 
+@Optional.Interface(modid = "Morpheus", iface = "net.quetzi.morpheus.api.INewDayHandler")
 public class CompatibilityMorpheus implements INewDayHandler {
 
    public CompatibilityMorpheus() {
