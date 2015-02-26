@@ -15,16 +15,15 @@ public class CompatibilityMorpheus implements INewDayHandler {
       FMLLog.info("[" + BetterSleeping.MODID + "] Loading Morpheus compatibility...");
 
       try {
-         Class clazz = Class.forName("net.quetzi.morpheus.MorpheusRegistry").getClass();
+         Class clazz = Class.forName("net.quetzi.morpheus.MorpheusRegistry");
          IMorpheusAPI registry = (IMorpheusAPI) clazz.newInstance();
          registry.registerHandler(this, 0);
-
+         FMLLog.info("[" + BetterSleeping.MODID + "] Morpheus compat seems to have loaded, disabling custom sleeping code.");
+         Config.percentPeopleToSleep = 2d;
       } catch (Exception e) {
          FMLLog.warning("[" + BetterSleeping.MODID + "] Failed to load the Morpheus compatibility!");
       }
 
-      FMLLog.info("[" + BetterSleeping.MODID + "] Morpheus compat seems to have loaded, disabling custom sleeping code.");
-      Config.percentPeopleToSleep = 2d;
    }
 
    @Override
