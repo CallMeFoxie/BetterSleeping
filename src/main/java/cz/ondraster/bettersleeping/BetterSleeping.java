@@ -71,6 +71,9 @@ public class BetterSleeping {
 
    @SubscribeEvent
    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+      if (event.phase != TickEvent.Phase.START)
+         return;
+      
       SleepingProperty property = null;
       if (event.player.worldObj.isRemote) {
          SleepOverlay.playerProperty = SleepingProperty.get(event.player);
