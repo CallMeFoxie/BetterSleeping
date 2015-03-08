@@ -1,8 +1,6 @@
 package cz.ondraster.bettersleeping.api;
 
 import cpw.mods.fml.common.FMLLog;
-import cz.ondraster.bettersleeping.BSSavedData;
-import cz.ondraster.bettersleeping.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 
@@ -12,6 +10,7 @@ import java.util.List;
 
 public class BetterSleepingAPI {
    private static List<PlayerDebuff> debuffs;
+   private static ISavedDataProvider dataProvider = null;
 
    public static void addDebuff(PlayerDebuff debuff) {
       if (debuffs == null)
@@ -46,6 +45,18 @@ public class BetterSleepingAPI {
    }
 
    public static PlayerData getSleepingProperty(EntityPlayer player) {
-      return BSSavedData.getData(player);
+      if (dataProvider == null) {
+         try {
+            Class clazz = Class.forName("cz.ondraster.bettersleeping.BSSavedData");
+            dataProvider = (ISavedDataProvider) clazz.newInstance();
+         } catch (Exception e) {
+            FMLLog.severe("[Better Sleeping API] Some mod tried accessing saved data without the mod loaded!");
+         }
+      }
+
+      if (dataProvider == null)
+         return null;
+
+      return dataProvider.getPlayerData(player.getUniqueID());
    }
 }

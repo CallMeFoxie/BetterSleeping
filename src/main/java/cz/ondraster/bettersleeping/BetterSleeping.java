@@ -14,6 +14,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
+import cz.ondraster.bettersleeping.api.PlayerData;
 import cz.ondraster.bettersleeping.api.PlayerDebuff;
 import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
@@ -93,13 +94,12 @@ public class BetterSleeping {
          return;
 
       PlayerData data = null;
-      if (event.player.worldObj.isRemote) {
-         data = BSSavedData.getData(event.player);
+      if (event.player.worldObj.isRemote)
          return;
-      }
+
 
       if (Config.enableSleepCounter) {
-         data = BSSavedData.getData(event.player);
+         data = BSSavedData.instance().getData(event.player);
          data.ticksSinceUpdate++;
          if (data.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
             data.ticksSinceUpdate = 0;
@@ -161,7 +161,7 @@ public class BetterSleeping {
          ticksSinceUpdate = 0;
       }
 
-      BSSavedData.instance.markDirty();
+      BSSavedData.instance().markDirty();
 
       ticksSinceUpdate++;
    }
@@ -169,7 +169,7 @@ public class BetterSleeping {
    @SubscribeEvent
    public void onPlayerSleepInBed(PlayerSleepInBedEvent event) {
       if (Config.enableSleepCounter) {
-         PlayerData data = BSSavedData.getData(event.entityPlayer);
+         PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
 
          if (data.getSleepCounter() >= Config.maximumSleepCounter) {
             event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.notTired"));

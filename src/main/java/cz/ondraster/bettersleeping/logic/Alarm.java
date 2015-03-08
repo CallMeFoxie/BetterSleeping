@@ -3,7 +3,7 @@ package cz.ondraster.bettersleeping.logic;
 import cz.ondraster.bettersleeping.BSSavedData;
 import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
-import cz.ondraster.bettersleeping.PlayerData;
+import cz.ondraster.bettersleeping.api.PlayerData;
 import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
 import net.minecraft.entity.player.EntityPlayer;
@@ -99,7 +99,7 @@ public class Alarm {
             }
 
             if (Config.enableSleepCounter) {
-               PlayerData property = BSSavedData.getData(player);
+               PlayerData property = BSSavedData.instance().getData(player);
                property.sleepCounter += (world.getWorldTime() - curTime) * Config.sleepPerSleptTick;
             }
          }
@@ -123,7 +123,7 @@ public class Alarm {
    }
 
    public static boolean canSleep(EntityPlayer player) {
-      PlayerData property = BSSavedData.getData(player);
+      PlayerData property = BSSavedData.instance().getData(player);
       if (property.sleepCounter < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter && Config.sleepOnGround) {
          return true;
       }

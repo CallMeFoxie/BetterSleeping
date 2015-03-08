@@ -1,5 +1,7 @@
 package cz.ondraster.bettersleeping;
 
+import cz.ondraster.bettersleeping.api.ISavedDataProvider;
+import cz.ondraster.bettersleeping.api.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -9,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BSSavedData extends WorldSavedData {
+public class BSSavedData extends WorldSavedData implements ISavedDataProvider {
 
    private static HashMap<UUID, PlayerData> savedData;
 
-   public static BSSavedData instance;
+   private static BSSavedData instance;
 
    public BSSavedData(String foo) {
       this();
@@ -30,9 +32,8 @@ public class BSSavedData extends WorldSavedData {
       NBTTagList list = tag.getTagList("PlayerData", 10);
       for (int i = 0; i < list.tagCount(); i++) {
          NBTTagCompound playerData = list.getCompoundTagAt(i);
-         UUID uuid = new UUID(playerData.getLong("UUIDMost"), tag.getLong("UUIDLeast"));
-         PlayerData data = new PlayerData();
-         data.readFromNBT(playerData);
+         UUID uuid = new UUID(playerData.getLong("UUIDMost"), playerData.getLong("UUIDLeast"));
+         PlayerData data = new PlayerData(playerData);
          savedData.put(uuid, data);
       }
    }
@@ -51,10 +52,10 @@ public class BSSavedData extends WorldSavedData {
       tag.setTag("PlayerData", list);
    }
 
-   public static PlayerData getPlayerData(UUID uuid) {
+   public PlayerData getPlayerData(UUID uuid) {
       PlayerData data = savedData.get(uuid);
       if (data == null) {
-         data = new PlayerData();
+         data = new PlayerData(Config.spawnSleepCounter);
          savedData.put(uuid, data);
       }
 
@@ -65,7 +66,11 @@ public class BSSavedData extends WorldSavedData {
       return player.getUniqueID();
    }
 
-   public static PlayerData getData(EntityPlayer player) {
+   public PlayerData getData(EntityPlayer player) {
       return getPlayerData(getUUID(player));
+   }
+
+   public static BSSavedData instance() {
+      return instance;
    }
 }
