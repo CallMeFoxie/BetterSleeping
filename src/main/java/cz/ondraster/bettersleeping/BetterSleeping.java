@@ -7,9 +7,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
 import cz.ondraster.bettersleeping.api.PlayerDebuff;
 import cz.ondraster.bettersleeping.api.SleepingProperty;
@@ -24,8 +26,10 @@ import cz.ondraster.bettersleeping.proxy.ProxyCommon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -47,6 +51,8 @@ public class BetterSleeping {
    public static BetterSleeping INSTANCE;
 
    private int ticksSinceUpdate = 0;
+
+   BSSavedData playerData;
 
 
    @EventHandler
@@ -195,6 +201,20 @@ public class BetterSleeping {
          return;
 
       AlternateSleep.trySleepingWorld(event.player.worldObj, true);
+   }
+
+   @EventHandler
+   public void onServerStarted(FMLServerStartedEvent event) {
+      if (event.getSide() == Side.CLIENT)
+         return;
+
+      World world = MinecraftServer.getServer().worldServers[0];
+
+      playerData = (BSSavedData) world.loadItemData(BSSavedData.class, BetterSleeping.MODID);
+      if (playerData == null) {
+         playerData = new BSSavedData();
+         world.setItemData(BetterSleeping.MODID, playerData);
+      }
    }
 
 }
