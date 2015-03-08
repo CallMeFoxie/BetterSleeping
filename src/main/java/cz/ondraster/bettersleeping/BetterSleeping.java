@@ -33,6 +33,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 import java.util.List;
@@ -97,6 +98,8 @@ public class BetterSleeping {
       if (event.player.worldObj.isRemote)
          return;
 
+      if (!event.player.isEntityAlive())
+         return;
 
       if (Config.enableSleepCounter) {
          data = BSSavedData.instance().getData(event.player);
@@ -209,6 +212,25 @@ public class BetterSleeping {
       if (playerData == null) {
          playerData = new BSSavedData();
          world.setItemData(BetterSleeping.MODID, playerData);
+      }
+   }
+
+   @SubscribeEvent
+   public void onPlayerDeath(LivingDeathEvent event) {
+      if (event.entity.worldObj.isRemote)
+         return;
+
+      if (!Config.enableSleepCounter)
+         return;
+
+      if (!Config.resetCounterOnDeath)
+         return;
+
+      if (event.entity instanceof EntityPlayer) {
+         EntityPlayer player = (EntityPlayer) event.entity;
+         PlayerData data = BSSavedData.instance().getPlayerData(player.getUniqueID());
+         data.sleepCounter = Config.spawnSleepCounter;
+         BSSavedData.instance().markDirty();
       }
    }
 

@@ -27,6 +27,8 @@ public class Config {
 
    public static boolean enableSleepTicks = false;
 
+   public static boolean resetCounterOnDeath = true;
+
 
    // debuff related stuff
    public static boolean enableDebuffs = true;
@@ -96,6 +98,8 @@ public class Config {
 
       enableSleepMessage = cfg.getBoolean("enableSleepMessage", "config", enableSleepMessage, "Enable message informing players about how" +
             " many are asleep.");
+
+      resetCounterOnDeath = cfg.getBoolean("resetCounterOnDeath", "config", resetCounterOnDeath, "Reset tiredness counter on death");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
