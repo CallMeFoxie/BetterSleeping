@@ -1,5 +1,6 @@
 package cz.ondraster.bettersleeping;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -14,7 +15,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cz.ondraster.bettersleeping.api.BetterSleepingAPI;
 import cz.ondraster.bettersleeping.api.PlayerDebuff;
-import cz.ondraster.bettersleeping.api.SleepingProperty;
 import cz.ondraster.bettersleeping.api.WorldSleepEvent;
 import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
 import cz.ondraster.bettersleeping.compat.CompatibilityMorpheus;
@@ -32,7 +32,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 import java.util.List;
@@ -93,45 +92,45 @@ public class BetterSleeping {
       if (event.phase != TickEvent.Phase.START)
          return;
 
-      SleepingProperty property = null;
+      PlayerData data = null;
       if (event.player.worldObj.isRemote) {
-         SleepOverlay.playerProperty = SleepingProperty.get(event.player);
+         data = BSSavedData.getData(event.player);
          return;
       }
 
       if (Config.enableSleepCounter) {
-         property = SleepingProperty.get(event.player);
-         property.ticksSinceUpdate++;
-         if (property.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
-            property.ticksSinceUpdate = 0;
-            property.sleepCounter--;
-            if (property.sleepCounter < 0)
-               property.sleepCounter = 0;
+         data = BSSavedData.getData(event.player);
+         data.ticksSinceUpdate++;
+         if (data.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
+            data.ticksSinceUpdate = 0;
+            data.sleepCounter--;
+            if (data.sleepCounter < 0)
+               data.sleepCounter = 0;
 
          }
 
          if (event.player.isPlayerSleeping() && Config.giveSleepCounterOnSleep > 0) {
-            property.sleepCounter += Config.giveSleepCounterOnSleep;
+            data.sleepCounter += Config.giveSleepCounterOnSleep;
          }
 
          // send update about tiredness to the client
-         if ((double) (Math.abs(property.sleepCounter - property.lastUpdate)) / Config.maximumSleepCounter >
+         if ((double) (Math.abs(data.sleepCounter - data.lastUpdate)) / Config.maximumSleepCounter >
                1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
             Network.networkChannel
-                  .sendTo(new MessageUpdateTiredness(property.sleepCounter), (EntityPlayerMP) event.player);
-            property.lastUpdate = property.sleepCounter;
+                  .sendTo(new MessageUpdateTiredness(data.sleepCounter), (EntityPlayerMP) event.player);
+            data.lastUpdate = data.sleepCounter;
          }
       }
 
-      if (property == null)
+      if (data == null)
          return; // safety, should not happen except maybe some edge cases
 
       if (Config.enableDebuffs && Config.enableSleepCounter && ticksSinceUpdate > 20) {
          // check for debuffs
          List<PlayerDebuff> debuffs = BetterSleepingAPI.getDebuffs();
          for (PlayerDebuff debuff : debuffs) {
-            if (debuff.enable && property.sleepCounter < debuff.tiredLevel) {
-               double percentTired = (debuff.tiredLevel - property.sleepCounter) / (double) (debuff.tiredLevel);
+            if (debuff.enable && data.sleepCounter < debuff.tiredLevel) {
+               double percentTired = (debuff.tiredLevel - data.sleepCounter) / (double) (debuff.tiredLevel);
                int scale = (int) Math.ceil(percentTired * debuff.maxScale) - 1;
                event.player.addPotionEffect(
                      new PotionEffect(debuff.potion.getId(), Config.POTION_DURATION, scale));
@@ -139,7 +138,7 @@ public class BetterSleeping {
          }
 
          // should fall asleep on the ground
-         if (property.sleepCounter == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
+         if (data.sleepCounter == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
             boolean result = MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.SleepOnGround(event.player));
 
             if (!result) {
@@ -162,21 +161,17 @@ public class BetterSleeping {
          ticksSinceUpdate = 0;
       }
 
-      ticksSinceUpdate++;
-   }
+      BSSavedData.instance.markDirty();
 
-   @SubscribeEvent
-   public void onEntityConstructing(EntityEvent.EntityConstructing event) {
-      if (event.entity instanceof EntityPlayer && SleepingProperty.get((EntityPlayer) event.entity) == null)
-         SleepingProperty.register((EntityPlayer) event.entity);
+      ticksSinceUpdate++;
    }
 
    @SubscribeEvent
    public void onPlayerSleepInBed(PlayerSleepInBedEvent event) {
       if (Config.enableSleepCounter) {
-         SleepingProperty property = SleepingProperty.get(event.entityPlayer);
+         PlayerData data = BSSavedData.getData(event.entityPlayer);
 
-         if (property.sleepCounter >= Config.maximumSleepCounter) {
+         if (data.getSleepCounter() >= Config.maximumSleepCounter) {
             event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.notTired"));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
@@ -205,7 +200,7 @@ public class BetterSleeping {
 
    @EventHandler
    public void onServerStarted(FMLServerStartedEvent event) {
-      if (event.getSide() == Side.CLIENT)
+      if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
          return;
 
       World world = MinecraftServer.getServer().worldServers[0];

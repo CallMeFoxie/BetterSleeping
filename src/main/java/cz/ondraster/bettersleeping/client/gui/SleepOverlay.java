@@ -7,7 +7,6 @@ import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.item.ItemClass;
 import cz.ondraster.bettersleeping.logic.MinecraftTime;
-import cz.ondraster.bettersleeping.api.SleepingProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -26,7 +25,7 @@ public class SleepOverlay extends OptionalGuiOverlay {
    public static final int ICON_WIDTH = 16;
    public static final int ICON_HEIGHT = 16;
 
-   public static SleepingProperty playerProperty;
+   public static long sleepCounter = 0;
 
    @SubscribeEvent
    public void onGuiRender(RenderGameOverlayEvent event) {
@@ -36,15 +35,12 @@ public class SleepOverlay extends OptionalGuiOverlay {
          return;
       }
 
-      if (playerProperty == null)
-         return;
-
       TextureManager mgr = Minecraft.getMinecraft().renderEngine;
       mgr.bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/gui/bar.png"));
 
       drawTexturedModalRect(Config.guiOffsetLeft, Config.guiOffsetTop, 0, 0, BAR_WIDTH, BAR_HEIGHT);
 
-      int takenPercent = (int) (((double) playerProperty.sleepCounter / Config.maximumSleepCounter) * MAX_OFFSET);
+      int takenPercent = (int) (((double) sleepCounter / Config.maximumSleepCounter) * MAX_OFFSET);
       if (takenPercent > MAX_OFFSET)
          takenPercent = MAX_OFFSET;
 

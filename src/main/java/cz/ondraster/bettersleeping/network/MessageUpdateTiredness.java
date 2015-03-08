@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cz.ondraster.bettersleeping.BetterSleeping;
-import cz.ondraster.bettersleeping.api.SleepingProperty;
+import cz.ondraster.bettersleeping.client.gui.SleepOverlay;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -32,8 +32,7 @@ public class MessageUpdateTiredness implements IMessage, IMessageHandler<Message
    @Override
    public IMessage onMessage(MessageUpdateTiredness message, MessageContext ctx) {
       EntityPlayer player = BetterSleeping.proxy.getPlayer();
-      SleepingProperty property = SleepingProperty.get(player);
-      property.sleepCounter = message.tiredness;
+      SleepOverlay.sleepCounter = message.tiredness;
 
       return null;
    }

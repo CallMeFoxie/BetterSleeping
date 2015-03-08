@@ -1,6 +1,8 @@
 package cz.ondraster.bettersleeping.api;
 
 import cpw.mods.fml.common.FMLLog;
+import cz.ondraster.bettersleeping.BSSavedData;
+import cz.ondraster.bettersleeping.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 
@@ -43,7 +45,7 @@ public class BetterSleepingAPI {
       return removed;
    }
 
-   public static SleepingProperty getSleepingProperty(EntityPlayer player) {
-      return SleepingProperty.get(player);
+   public static PlayerData getSleepingProperty(EntityPlayer player) {
+      return BSSavedData.getData(player);
    }
 }

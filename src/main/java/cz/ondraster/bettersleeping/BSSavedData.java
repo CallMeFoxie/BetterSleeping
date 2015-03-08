@@ -11,10 +11,18 @@ import java.util.UUID;
 
 public class BSSavedData extends WorldSavedData {
 
-   private HashMap<UUID, PlayerData> savedData;
+   private static HashMap<UUID, PlayerData> savedData;
+
+   public static BSSavedData instance;
+
+   public BSSavedData(String foo) {
+      this();
+   }
 
    public BSSavedData() {
       super(BetterSleeping.MODID);
+      savedData = new HashMap<UUID, PlayerData>();
+      instance = this;
    }
 
    @Override
@@ -43,7 +51,7 @@ public class BSSavedData extends WorldSavedData {
       tag.setTag("PlayerData", list);
    }
 
-   public PlayerData getPlayerData(UUID uuid) {
+   public static PlayerData getPlayerData(UUID uuid) {
       PlayerData data = savedData.get(uuid);
       if (data == null) {
          data = new PlayerData();
@@ -55,5 +63,9 @@ public class BSSavedData extends WorldSavedData {
 
    public static UUID getUUID(EntityPlayer player) {
       return player.getUniqueID();
+   }
+
+   public static PlayerData getData(EntityPlayer player) {
+      return getPlayerData(getUUID(player));
    }
 }
