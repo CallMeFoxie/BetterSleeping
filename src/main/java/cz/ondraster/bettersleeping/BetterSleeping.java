@@ -171,6 +171,9 @@ public class BetterSleeping {
 
    @SubscribeEvent
    public void onPlayerSleepInBed(PlayerSleepInBedEvent event) {
+      if (event.entityPlayer.worldObj.isRemote)
+         return;
+
       if (Config.enableSleepCounter) {
          PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
 
@@ -181,9 +184,6 @@ public class BetterSleeping {
       }
 
       // check for amount of people sleeping in this dimension
-      if (event.entityPlayer.worldObj.isRemote)
-         return;
-
       AlternateSleep.trySleepingWorld(event.entityPlayer.worldObj);
    }
 
