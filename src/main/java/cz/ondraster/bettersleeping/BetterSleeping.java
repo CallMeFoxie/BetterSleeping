@@ -174,6 +174,12 @@ public class BetterSleeping {
       if (event.entityPlayer.worldObj.isRemote)
          return;
 
+      if (Config.disableSleeping) {
+         event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.sleepingDisabled"));
+         event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
+         return;
+      }
+
       if (Config.enableSleepCounter) {
          PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
 

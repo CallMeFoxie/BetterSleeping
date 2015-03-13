@@ -37,6 +37,7 @@ public class Config {
    // tweaks
    public static boolean enablePositionReset = true;
    public static double chanceToStopRain = 0.9;
+   public static boolean disableSleeping = false;
 
 
    // gui
@@ -101,6 +102,9 @@ public class Config {
 
       resetCounterOnDeath = cfg.getBoolean("resetCounterOnDeath", "config", resetCounterOnDeath, "Reset tiredness counter on death");
 
+      disableSleeping = cfg.getBoolean("disableSleeping", "config", disableSleeping, "Enable sleeping at all. Remember to disable the " +
+            "remaining modules of this mod too, or you will be stuck in loop!");
+
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
       boolean[] defaultEnable = {true, true, false, false, true, false, true, false, false};
@@ -124,6 +128,14 @@ public class Config {
 
       for (PlayerDebuff debuff : debuffs) {
          BetterSleepingAPI.addDebuff(debuff);
+      }
+
+      // sanity check for lazy mod authors
+      if (disableSleeping) {
+         if (enableSleepCounter) {
+            BSLog.warn("You have disabled sleeping yet enabled sleeping counter. YOU MONSTER! Disabling sleep counter for you...");
+            enableSleepCounter = false;
+         }
       }
 
       save();
