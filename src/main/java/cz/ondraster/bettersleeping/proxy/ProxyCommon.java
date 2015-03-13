@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cz.ondraster.bettersleeping.BetterSleeping;
+import cz.ondraster.bettersleeping.EventHandlers;
 import cz.ondraster.bettersleeping.block.BlockClass;
 import cz.ondraster.bettersleeping.client.gui.GuiHandlers;
 import cz.ondraster.bettersleeping.item.ItemClass;
@@ -21,13 +22,16 @@ public class ProxyCommon {
    public void preinit(FMLPreInitializationEvent event) {
       BlockClass.register();
       ItemClass.register();
-      Network network = new Network();
+
+      new Network();
       Network.initClient();
+
+      new EventHandlers();
    }
 
    public void init(FMLInitializationEvent event) {
-      FMLCommonHandler.instance().bus().register(BetterSleeping.INSTANCE);
-      MinecraftForge.EVENT_BUS.register(BetterSleeping.INSTANCE);
+      FMLCommonHandler.instance().bus().register(EventHandlers.INSTANCE);
+      MinecraftForge.EVENT_BUS.register(EventHandlers.INSTANCE);
 
       NetworkRegistry.INSTANCE.registerGuiHandler(BetterSleeping.INSTANCE, new GuiHandlers());
 
