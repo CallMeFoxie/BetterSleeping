@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 public class EventHandlers {
@@ -72,7 +73,12 @@ public class EventHandlers {
       if (Config.enableSleepCounter) {
          data = BSSavedData.instance().getData(event.player);
          data.ticksSinceUpdate++;
-         if (data.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
+         double ticksPerSleepCounter = Config.ticksPerSleepCounter;
+
+         if (event.player.isSprinting())
+            ticksPerSleepCounter /= Config.multiplicatorWhenSprinting;
+
+         if (data.ticksSinceUpdate >= ticksPerSleepCounter) {
             data.ticksSinceUpdate = 0;
 
             if (!event.player.capabilities.isCreativeMode)
@@ -142,5 +148,26 @@ public class EventHandlers {
          return;
 
       AlternateSleep.trySleepingWorld(event.player.worldObj, true);
+   }
+
+   @SubscribeEvent
+   public void onEntityJump(LivingEvent.LivingJumpEvent event) {
+      if (event.entity instanceof EntityPlayer && Config.tirednessJump > 0) {
+         EntityPlayer player = (EntityPlayer) event.entity;
+         if (player.worldObj.isRemote)
+            return;
+
+         if (player.capabilities.isCreativeMode)
+            return;
+
+         PlayerData data = BSSavedData.instance().getData(player);
+         if (player.isSprinting())
+            data.sleepCounter -= Config.tirednessJump * Config.multiplicatorWhenSprinting;
+         else
+            data.sleepCounter -= Config.tirednessJump;
+
+         BSSavedData.instance().markDirty();
+
+      }
    }
 }

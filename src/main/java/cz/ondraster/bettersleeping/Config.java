@@ -24,6 +24,7 @@ public class Config {
    // DRAIN
    public static int ticksPerSleepCounter = 4;        // how many ticks it takes to add tiredness
    public static int tirednessJump = 8;               // how many tiredness is added on a jump
+   public static double multiplicatorWhenSprinting = 2;  // how many times more you get tired when sprinting
 
    // GAIN
    public static double sleepPerSleptTick = 0.5;      // how much tiredness is removed on a slept tick
@@ -51,7 +52,7 @@ public class Config {
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
-   
+
 
    private Configuration cfg;
 
@@ -106,6 +107,8 @@ public class Config {
 
       disableSleeping = cfg.getBoolean("disableSleeping", "config", disableSleeping, "Enable sleeping at all. Remember to disable the " +
             "remaining modules of this mod too, or you will be stuck in loop!");
+
+      tirednessJump = cfg.getInt("tirednessJump", "config", tirednessJump, 0, 23999, "How much tiredness is added when the player jumps");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
