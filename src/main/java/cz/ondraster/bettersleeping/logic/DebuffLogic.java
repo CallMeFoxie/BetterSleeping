@@ -36,7 +36,7 @@ public class DebuffLogic {
             double percentTired = (debuff.tiredLevel - data.sleepCounter) / (double) (debuff.tiredLevel);
             int scale = (int) Math.ceil(percentTired * debuff.maxScale) - 1;
             event.player.addPotionEffect(
-                  new PotionEffect(debuff.potion.getId(), Config.POTION_DURATION, scale));
+                  new PotionEffect(debuff.potion.getId(), Config.POTION_DURATION * 2, scale));
          }
       }
 
