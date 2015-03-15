@@ -25,7 +25,7 @@ public class BetterSleeping {
    @SidedProxy(clientSide = "cz.ondraster.bettersleeping.proxy.ProxyClient", serverSide = "cz.ondraster.bettersleeping.proxy.ProxyCommon")
    public static ProxyCommon proxy;
 
-   @Mod.Instance
+   @Mod.Instance(MODID)
    public static BetterSleeping INSTANCE;
 
 
