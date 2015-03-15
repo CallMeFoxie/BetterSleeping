@@ -74,7 +74,10 @@ public class EventHandlers {
          data.ticksSinceUpdate++;
          if (data.ticksSinceUpdate >= Config.ticksPerSleepCounter) {
             data.ticksSinceUpdate = 0;
-            data.sleepCounter--;
+
+            if (!event.player.capabilities.isCreativeMode)
+               data.sleepCounter--;
+
             if (data.sleepCounter < 0)
                data.sleepCounter = 0;
 
