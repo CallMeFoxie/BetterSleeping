@@ -15,7 +15,7 @@ public class Config {
 
    // MAX
    public static int maximumSleepCounter = 18000;     // how much tiredness you can get the most
-   public static long spawnSleepCounter = 18000;      // how much tiredness you are spawned in
+   public static int spawnSleepCounter = 18000;       // how much tiredness you are spawned in
 
    // BLOCKS & ITEMS
    public static boolean enableRingWatch = true;      // enable ring watch
@@ -109,6 +109,12 @@ public class Config {
             "remaining modules of this mod too, or you will be stuck in loop!");
 
       tirednessJump = cfg.getInt("tirednessJump", "config", tirednessJump, 0, 23999, "How much tiredness is added when the player jumps");
+
+      multiplicatorWhenSprinting = cfg.get("config", "multiplicatorWhenSprinting", multiplicatorWhenSprinting, "How many times you add " +
+            "tiredness when running").getDouble();
+
+      spawnSleepCounter = cfg.getInt("spawnSleepCounter", "config", spawnSleepCounter, 0, Integer.MAX_VALUE, "How much sleep counter you " +
+            "spawn with");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
