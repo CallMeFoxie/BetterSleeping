@@ -31,7 +31,7 @@ In order for the mod to properly run you also need to make sure that the coremod
 Now your development environment should be ready to run my mod.
 
 ## API ##
-The API should be as stable as possible, you can either grab it yourself from here or you can grab a separate JAR from my [Jenkins](http://ondraster.cz:8080/job/Better%20Sleeping/) site.
+The API should be as stable as possible, you can either grab it yourself from here or you can grab a separate JAR from the [Jenkins](http://ondraster.cz:8080/job/Better%20Sleeping/).
 
 ## Bug Reports and Feature Requests ##
 Both should be done in Issues here on GitHub. When you are reporting a crash, DEFINITELY include a crashlog and preferably even the main log itself (so it includes the list of other mods you are running etc). If you did something special, DESCRIBE IT! If you are reporting a gameplay bug, DESCRIBE IT!
