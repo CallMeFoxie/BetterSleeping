@@ -6,7 +6,7 @@ public class PlayerData {
    private long sleepCounter = Integer.MAX_VALUE;
    public long lastUpdate = Integer.MAX_VALUE;
    public int ticksSinceUpdate = 0;
-   private int caffeineCounter = 0;
+   private double caffeineCounter = 0;
 
    /*
     * Constructor when being loaded from NBT
@@ -30,12 +30,12 @@ public class PlayerData {
 
    public void readFromNBT(NBTTagCompound compound) {
       sleepCounter = compound.getLong("sleepCounter");
-      caffeineCounter = compound.getInteger("caffeineCounter");
+      caffeineCounter = compound.getDouble("caffeineCounter");
    }
 
    public void writeToNBT(NBTTagCompound compound) {
       compound.setLong("sleepCounter", sleepCounter);
-      compound.setInteger("caffeineCounter", caffeineCounter);
+      compound.setDouble("caffeineCounter", caffeineCounter);
    }
 
    public void increaseSleepCounter() {
@@ -64,11 +64,11 @@ public class PlayerData {
       return sleepCounter;
    }
 
-   public int getCaffeineCounter() {
+   public double getCaffeineCounter() {
       return caffeineCounter;
    }
 
-   public void decreaseCaffeineLevel(int amount) {
+   public void decreaseCaffeineLevel(double amount) {
       this.caffeineCounter -= amount;
       if (caffeineCounter < 0)
          caffeineCounter = 0;
@@ -78,7 +78,7 @@ public class PlayerData {
       decreaseCaffeineLevel(1);
    }
 
-   public void increaseCaffeineLevel(int amount) {
+   public void increaseCaffeineLevel(double amount) {
       this.caffeineCounter += amount;
    }
 }

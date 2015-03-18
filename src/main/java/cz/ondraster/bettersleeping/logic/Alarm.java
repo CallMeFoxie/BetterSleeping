@@ -101,7 +101,7 @@ public class Alarm {
             if (Config.enableSleepCounter) {
                PlayerData property = BSSavedData.instance().getData(player);
                property.increaseSleepCounter((long) ((world.getWorldTime() - curTime) * Config.sleepPerSleptTick));
-               property.decreaseCaffeineLevel((int) ((world.getWorldTime() - curTime) * Config.caffeinePerSleptTick));
+               property.decreaseCaffeineLevel(((world.getWorldTime() - curTime) * Config.caffeinePerTick));
             }
          }
 
