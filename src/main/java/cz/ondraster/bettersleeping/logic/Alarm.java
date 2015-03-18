@@ -100,7 +100,8 @@ public class Alarm {
 
             if (Config.enableSleepCounter) {
                PlayerData property = BSSavedData.instance().getData(player);
-               property.sleepCounter += (world.getWorldTime() - curTime) * Config.sleepPerSleptTick;
+               property.increaseSleepCounter((long) ((world.getWorldTime() - curTime) * Config.sleepPerSleptTick));
+               property.decreaseCaffeineLevel((int) ((world.getWorldTime() - curTime) * Config.caffeinePerSleptTick));
             }
          }
 
@@ -124,7 +125,8 @@ public class Alarm {
 
    public static boolean canSleep(EntityPlayer player) {
       PlayerData property = BSSavedData.instance().getData(player);
-      if (property.sleepCounter < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter && Config.sleepOnGround) {
+      if (property.getSleepCounter() < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter &&
+            Config.sleepOnGround) {
          return true;
       }
 

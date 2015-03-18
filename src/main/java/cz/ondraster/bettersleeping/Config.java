@@ -50,6 +50,14 @@ public class Config {
    public static boolean enableAlarmSound = true;     // play sound on woken up by alarm
    public static boolean enableSleepMessage = true;   // enable sleep message related to how many people need to sleep
 
+   // caffeine
+   public static boolean enableCaffeine = true;       // enable caffeine mechanic
+   public static int caffeineDebuffsAt = 80;          // when you start getting debuff
+   public static int deathFromCaffeineOverdose = 100; // at what level you will die from overdosing ("caffeine intoxication")
+   public static String[] allowedNames = {"coffee", "tea"}; // what items will be looked for the item in the oredict
+   public static final int caffeinePerItem = 10;      // how much caffeine is absorbed per item
+   public static double caffeinePerSleptTick = .01;        // how much caffeine is removed on slept tick
+
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
 

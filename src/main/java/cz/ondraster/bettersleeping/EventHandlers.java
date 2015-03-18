@@ -6,6 +6,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cz.ondraster.bettersleeping.api.PlayerData;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.logic.AlternateSleep;
+import cz.ondraster.bettersleeping.logic.CaffeineLogic;
 import cz.ondraster.bettersleeping.logic.DebuffLogic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
@@ -13,6 +14,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 public class EventHandlers {
 
@@ -38,7 +40,7 @@ public class EventHandlers {
       if (event.entity instanceof EntityPlayer) {
          EntityPlayer player = (EntityPlayer) event.entity;
          PlayerData data = BSSavedData.instance().getPlayerData(player.getUniqueID());
-         data.sleepCounter = Config.spawnSleepCounter;
+         data.resetSleepCounter(Config.spawnSleepCounter);
          BSSavedData.instance().markDirty();
       }
    }
@@ -82,15 +84,12 @@ public class EventHandlers {
             data.ticksSinceUpdate = 0;
 
             if (!event.player.capabilities.isCreativeMode)
-               data.sleepCounter--;
-
-            if (data.sleepCounter < 0)
-               data.sleepCounter = 0;
+               data.decreaseSleepCounter();
 
          }
 
          if (event.player.isPlayerSleeping() && Config.giveSleepCounterOnSleep > 0) {
-            data.sleepCounter += Config.giveSleepCounterOnSleep;
+            data.increaseSleepCounter(Config.giveSleepCounterOnSleep);
          }
 
          // send update about tiredness to the client
@@ -103,6 +102,10 @@ public class EventHandlers {
       if (Config.enableDebuffs && Config.enableSleepCounter && ticksSinceUpdate > 20) {
          // check for debuffs
          DebuffLogic.checkForDebuffs(event, data);
+
+         if (Config.enableCaffeine) {
+            CaffeineLogic.checkDebuff(event.player);
+         }
 
          ticksSinceUpdate = 0;
       }
@@ -162,12 +165,21 @@ public class EventHandlers {
 
          PlayerData data = BSSavedData.instance().getData(player);
          if (player.isSprinting())
-            data.sleepCounter -= Config.tirednessJump * Config.multiplicatorWhenSprinting;
+            data.decreaseSleepCounter((long) (Config.tirednessJump * Config.multiplicatorWhenSprinting));
          else
-            data.sleepCounter -= Config.tirednessJump;
+            data.decreaseSleepCounter(Config.tirednessJump);
 
          BSSavedData.instance().markDirty();
 
+      }
+   }
+
+   @SubscribeEvent
+   public void onPlayerUseItem(PlayerUseItemEvent.Finish event) {
+      if (CaffeineLogic.isCoffee(event.item)) {
+         PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
+         data.increaseCaffeineLevel(Config.caffeinePerItem);
+         BSSavedData.instance().markDirty();
       }
    }
 }
