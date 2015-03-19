@@ -33,9 +33,9 @@ public class CaffeineLogic {
    public static boolean isCoffee(ItemStack itemStack) {
       int[] ids = OreDictionary.getOreIDs(itemStack);
       if (ids.length > 0) {
-         List<String> allowed = Arrays.asList(Config.allowedNames);
-         for (int i = 0; i < ids.length; i++) {
-            String orename = OreDictionary.getOreName(ids[i]);
+         List<String> allowed = Arrays.asList(Config.caffeineOredicts);
+         for (int id : ids) {
+            String orename = OreDictionary.getOreName(id);
             if (allowed.contains(orename)) {
                return true;
             }

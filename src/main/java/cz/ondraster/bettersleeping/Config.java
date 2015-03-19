@@ -54,11 +54,10 @@ public class Config {
    public static boolean enableCaffeine = true;       // enable caffeine mechanic
    public static int caffeineDebuffsAt = 80;          // when you start getting debuff
    public static int deathFromCaffeineOverdose = 100; // at what level you will die from overdosing ("caffeine intoxication")
-   public static String[] allowedNames = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea", "foodChaitea",
-         "foodEspresso", "foodMochaicecream", "cropCoffee"};
-   // what items will be looked for the item in the oredict
-   public static double caffeinePerItem = 10;         // how much caffeine is absorbed per item
-   public static double caffeinePerTick = .01;        // how much caffeine is removed per tick
+   public static String[] caffeineOredicts = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea",
+         "foodChaitea", "foodEspresso", "foodMochaicecream", "cropCoffee"};   // what items will be looked for the item in the oredict
+   public static float caffeinePerItem = 10;          // how much caffeine is absorbed per item
+   public static float caffeinePerTick = .1f;         // how much caffeine is removed per tick
    public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
 
    // PRIVATE
@@ -126,6 +125,26 @@ public class Config {
 
       spawnSleepCounter = cfg.getInt("spawnSleepCounter", "config", spawnSleepCounter, 0, Integer.MAX_VALUE, "How much sleep counter you " +
             "spawn with");
+
+      enableCaffeine = cfg.getBoolean("enableCaffeine", "config.caffeine", enableCaffeine, "Enable caffeine mechanics");
+
+      deathFromCaffeineOverdose = cfg.getInt("deathFromCaffeineOverdose", "config.caffeine", deathFromCaffeineOverdose, 0, 23999, "at " +
+            "which level do you die from overdose of caffeine (0 to disable)");
+
+      caffeineDebuffsAt =
+            cfg.getInt("caffeineDebuffsAt", "config.caffeine", caffeineDebuffsAt, 0, 23999, "At which level you get nausea from caffeine");
+
+      caffeineOredicts = cfg.getStringList("caffeineOredicts", "config.caffeine", caffeineOredicts, "OreDict entries to allow caffeine " +
+            "from");
+
+      caffeinePerItem = cfg.getFloat("caffeinePerItem", "config.caffeine", caffeinePerItem, 0, 100, "How much caffeine you gain from an " +
+            "eaten/drunk item");
+
+      caffeinePerTick = cfg.getFloat("caffeinePerTick", "config.caffeine", caffeinePerTick, 0, 100, "How much caffeination is removed per" +
+            " tick");
+
+      tirednessPerCaffeine = cfg.getInt("tirednessPerCaffeine", "config.caffeine", tirednessPerCaffeine, 1, 23999, "How much tiredness " +
+            "you retain for drinking/eating valid item");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
