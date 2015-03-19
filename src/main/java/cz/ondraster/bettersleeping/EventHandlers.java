@@ -9,6 +9,7 @@ import cz.ondraster.bettersleeping.logic.AlternateSleep;
 import cz.ondraster.bettersleeping.logic.CaffeineLogic;
 import cz.ondraster.bettersleeping.logic.DebuffLogic;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemFood;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -181,8 +182,19 @@ public class EventHandlers {
 
       if (CaffeineLogic.isCoffee(event.item)) {
          PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
-         data.increaseCaffeineLevel(Config.caffeinePerItem);
-         data.increaseSleepCounter(Config.tirednessPerCaffeine);
+         if (event.result.getItem() instanceof ItemFood) {
+            ItemFood food = (ItemFood) event.result.getItem();
+            float hunger = food.func_150905_g(event.result);
+            float saturation = food.func_150906_h(event.result);
+            hunger *= Config.itemFoodHungerMult;
+            saturation *= Config.itemFoodSaturationMult;
+            data.increaseCaffeineLevel(hunger);
+            data.increaseSleepCounter((int) saturation);
+         } else {
+            data.increaseCaffeineLevel(Config.caffeinePerItem);
+            data.increaseSleepCounter(Config.tirednessPerCaffeine);
+         }
+
          BSSavedData.instance().markDirty();
          // send update about tiredness to the client
          DebuffLogic.updateClientIfNeeded(event.entityPlayer, data);

@@ -57,8 +57,10 @@ public class Config {
    public static String[] caffeineOredicts = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea",
          "foodChaitea", "foodEspresso", "foodMochaicecream", "cropCoffee"};   // what items will be looked for the item in the oredict
    public static float caffeinePerItem = 10;          // how much caffeine is absorbed per item
-   public static float caffeinePerTick = .1f;         // how much caffeine is removed per tick
+   public static float caffeinePerTick = .005f;         // how much caffeine is removed per tick
    public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
+   public static float itemFoodSaturationMult = 200.0f; // multiplier for ItemFood (most of the food). Saturation = regained tiredness
+   public static float itemFoodHungerMult = 4.0f;     // multiplier for ItemFood (most of the food). Hunger = gained caffeine
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
@@ -128,7 +130,7 @@ public class Config {
 
       enableCaffeine = cfg.getBoolean("enableCaffeine", "config.caffeine", enableCaffeine, "Enable caffeine mechanics");
 
-      deathFromCaffeineOverdose = cfg.getInt("deathFromCaffeineOverdose", "config.caffeine", deathFromCaffeineOverdose, 0, 23999, "at " +
+      deathFromCaffeineOverdose = cfg.getInt("deathFromCaffeineOverdose", "config.caffeine", deathFromCaffeineOverdose, 0, 23999, "At " +
             "which level do you die from overdose of caffeine (0 to disable)");
 
       caffeineDebuffsAt =
@@ -138,13 +140,20 @@ public class Config {
             "from");
 
       caffeinePerItem = cfg.getFloat("caffeinePerItem", "config.caffeine", caffeinePerItem, 0, 100, "How much caffeine you gain from an " +
-            "eaten/drunk item");
+            "eaten/drunk item (NOT ItemFood)");
 
       caffeinePerTick = cfg.getFloat("caffeinePerTick", "config.caffeine", caffeinePerTick, 0, 100, "How much caffeination is removed per" +
             " tick");
 
       tirednessPerCaffeine = cfg.getInt("tirednessPerCaffeine", "config.caffeine", tirednessPerCaffeine, 1, 23999, "How much tiredness " +
-            "you retain for drinking/eating valid item");
+            "you regain for drinking/eating valid item (NOT ItemFood)");
+
+      itemFoodSaturationMult = cfg.getFloat("itemFoodSaturationMult", "config.caffeine", itemFoodSaturationMult, 0, 1000, "Multiplier for" +
+            " " +
+            "ItemFood (most of the food). Saturation = regained tiredness");
+
+      itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 100, "Multiplier for ItemFood " +
+            "(most of the food). Hunger = gained caffeine");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
@@ -179,7 +188,8 @@ public class Config {
          }
       }
 
-      save();
+      if (cfg.hasChanged())
+         save();
    }
 
    public void save() {
