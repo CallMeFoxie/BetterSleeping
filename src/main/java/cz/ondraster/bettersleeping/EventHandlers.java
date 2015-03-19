@@ -40,7 +40,7 @@ public class EventHandlers {
       if (event.entity instanceof EntityPlayer) {
          EntityPlayer player = (EntityPlayer) event.entity;
          PlayerData data = BSSavedData.instance().getPlayerData(player.getUniqueID());
-         data.resetSleepCounter(Config.spawnSleepCounter);
+         data.reset(Config.spawnSleepCounter);
          BSSavedData.instance().markDirty();
       }
    }
@@ -93,7 +93,7 @@ public class EventHandlers {
          }
 
          // send update about tiredness to the client
-         DebuffLogic.updateClientIfNeeded(event, data);
+         DebuffLogic.updateClientIfNeeded(event.player, data);
       }
 
       if (data == null)
@@ -176,10 +176,16 @@ public class EventHandlers {
 
    @SubscribeEvent
    public void onPlayerUseItem(PlayerUseItemEvent.Finish event) {
+      if (event.entityPlayer.worldObj.isRemote)
+         return;
+
       if (CaffeineLogic.isCoffee(event.item)) {
          PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
          data.increaseCaffeineLevel(Config.caffeinePerItem);
+         data.increaseSleepCounter(Config.tirednessPerCaffeine);
          BSSavedData.instance().markDirty();
+         // send update about tiredness to the client
+         DebuffLogic.updateClientIfNeeded(event.entityPlayer, data);
       }
    }
 }

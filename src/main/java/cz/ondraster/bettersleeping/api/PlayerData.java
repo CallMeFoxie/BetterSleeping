@@ -56,8 +56,9 @@ public class PlayerData {
          this.sleepCounter = 0;
    }
 
-   public void resetSleepCounter(long amount) {
+   public void reset(long amount) {
       this.sleepCounter = amount;
+      caffeineCounter = 0;
    }
 
    public long getSleepCounter() {

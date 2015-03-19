@@ -7,17 +7,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CaffeineLogic {
+   public static DamageSource damageCaffeine = new DamageOverdose();
+
    public static void checkDebuff(EntityPlayer player) {
       PlayerData data = BSSavedData.instance().getData(player);
 
       if (data.getCaffeineCounter() >= Config.deathFromCaffeineOverdose && Config.deathFromCaffeineOverdose > 0) {
-         player.setDead();
+         player.attackEntityFrom(damageCaffeine, 9001);
       }
 
       if (data.getCaffeineCounter() >= Config.caffeineDebuffsAt) {

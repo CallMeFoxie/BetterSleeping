@@ -20,11 +20,11 @@ import java.util.List;
 
 public class DebuffLogic {
 
-   public static void updateClientIfNeeded(TickEvent.PlayerTickEvent event, PlayerData data) {
+   public static void updateClientIfNeeded(EntityPlayer player, PlayerData data) {
       if ((double) (Math.abs(data.getSleepCounter() - data.lastUpdate)) / Config.maximumSleepCounter >
-            1.0d / SleepOverlay.MAX_OFFSET && event.player instanceof EntityPlayerMP) {
+            1.0d / SleepOverlay.MAX_OFFSET && player instanceof EntityPlayerMP) {
          Network.networkChannel
-               .sendTo(new MessageUpdateTiredness(data.getSleepCounter()), (EntityPlayerMP) event.player);
+               .sendTo(new MessageUpdateTiredness(data.getSleepCounter()), (EntityPlayerMP) player);
          data.lastUpdate = data.getSleepCounter();
       }
    }

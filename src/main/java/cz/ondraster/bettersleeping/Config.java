@@ -55,10 +55,11 @@ public class Config {
    public static int caffeineDebuffsAt = 80;          // when you start getting debuff
    public static int deathFromCaffeineOverdose = 100; // at what level you will die from overdosing ("caffeine intoxication")
    public static String[] allowedNames = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea", "foodChaitea",
-         "foodEspresso", "foodMochaicecream"};
+         "foodEspresso", "foodMochaicecream", "cropCoffee"};
    // what items will be looked for the item in the oredict
    public static double caffeinePerItem = 10;         // how much caffeine is absorbed per item
-   public static double caffeinePerTick = .01;        // how much caffeine is removed on slept tick
+   public static double caffeinePerTick = .01;        // how much caffeine is removed per tick
+   public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
