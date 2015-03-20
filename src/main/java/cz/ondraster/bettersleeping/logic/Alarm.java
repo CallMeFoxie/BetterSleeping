@@ -65,12 +65,14 @@ public class Alarm {
          mntTotal = 0;
 
       long curTime = world.getWorldTime();
+      long reallySleptTime = 0;
 
       if (alarms.size() == 0) {
          long i = curTime + 24000L;
          i -= i % 24000;
          i += Config.defaultWakeUpTime;
          i += world.rand.nextInt(Config.oversleepWithoutAlarm);
+         reallySleptTime = i - world.getWorldTime();
          world.setWorldTime(i);
       } else {
          long i = curTime;
@@ -81,12 +83,11 @@ public class Alarm {
          // append new time
          i += mntTotal;
          i += world.rand.nextInt(Config.oversleepWithAlarm / alarms.size());
+         reallySleptTime = i - world.getWorldTime();
          world.setWorldTime(i);
       }
 
       MinecraftTime time = MinecraftTime.getFromWorldTime(world.getWorldTime());
-
-      long sleptTime = world.getWorldTime() - curTime;
 
       // reset all players
       for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
@@ -100,8 +101,8 @@ public class Alarm {
 
             if (Config.enableSleepCounter) {
                PlayerData property = BSSavedData.instance().getData(player);
-               property.increaseSleepCounter((long) ((world.getWorldTime() - curTime) * Config.sleepPerSleptTick));
-               property.decreaseCaffeineLevel(((world.getWorldTime() - curTime) * Config.caffeinePerTick));
+               property.increaseSleepCounter((long) (reallySleptTime * Config.sleepPerSleptTick));
+               property.decreaseCaffeineLevel((reallySleptTime * Config.caffeinePerTick));
             }
          }
 
@@ -109,14 +110,14 @@ public class Alarm {
       }
 
       if (Config.enableSleepTicks && world instanceof WorldServer) {
-         AlternateSleep.tickWorldCustom((WorldServer) world, sleptTime);
+         AlternateSleep.tickWorldCustom((WorldServer) world, reallySleptTime);
       }
 
       // possibly reset weather?
       if (Config.chanceToStopRain >= world.rand.nextDouble())
          world.provider.resetRainAndThunder();
 
-      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Post(world, sleptTime));
+      MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.Post(world, reallySleptTime));
    }
 
    public static boolean canNotSleep(EntityPlayer player) {

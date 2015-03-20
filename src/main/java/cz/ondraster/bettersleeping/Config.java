@@ -57,10 +57,13 @@ public class Config {
    public static String[] caffeineOredicts = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea",
          "foodChaitea", "foodEspresso", "foodMochaicecream", "cropCoffee"};   // what items will be looked for the item in the oredict
    public static float caffeinePerItem = 10;          // how much caffeine is absorbed per item
-   public static float caffeinePerTick = .005f;         // how much caffeine is removed per tick
+   public static float caffeinePerTick = .005f;       // how much caffeine is removed per tick
    public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
    public static float itemFoodSaturationMult = 200.0f; // multiplier for ItemFood (most of the food). Saturation = regained tiredness
    public static float itemFoodHungerMult = 6.0f;     // multiplier for ItemFood (most of the food). Hunger = gained caffeine
+
+   // compat
+   public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
@@ -154,6 +157,9 @@ public class Config {
 
       itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 100, "Multiplier for ItemFood " +
             "(most of the food). Hunger = gained caffeine");
+
+      enableCompatHarvestTN = cfg.getBoolean("enableCompatHarvestTN", "config.compatibility", enableCompatHarvestTN, "Enable extra " +
+            "patched code for Pam's HarvestTheNether (requires the mod to be loaded)");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
