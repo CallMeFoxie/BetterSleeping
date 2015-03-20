@@ -1,9 +1,11 @@
 package cz.ondraster.bettersleeping;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cz.ondraster.bettersleeping.api.PlayerData;
+import cz.ondraster.bettersleeping.compat.CompatibilityEnviroMine;
 import cz.ondraster.bettersleeping.logic.Alarm;
 import cz.ondraster.bettersleeping.logic.AlternateSleep;
 import cz.ondraster.bettersleeping.logic.CaffeineLogic;
@@ -106,6 +108,11 @@ public class EventHandlers {
 
          if (Config.enableCaffeine) {
             CaffeineLogic.checkDebuff(event.player);
+         }
+
+         if (Config.enviromineSanityDecrease > 0 && Loader.isModLoaded("enviromine")) {
+            if (Config.enviromineSanityAt > ((float) data.getSleepCounter() / Config.maximumSleepCounter) * 100f)
+               CompatibilityEnviroMine.changeSanity(event.player, Config.enviromineSanityDecrease * (-1));
          }
 
          ticksSinceUpdate = 0;

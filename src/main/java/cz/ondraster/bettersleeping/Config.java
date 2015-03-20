@@ -64,6 +64,8 @@ public class Config {
 
    // compat
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
+   public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
+   public static int enviromineSanityAt = 20;         // at which level (%) do you start losing sanity
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
