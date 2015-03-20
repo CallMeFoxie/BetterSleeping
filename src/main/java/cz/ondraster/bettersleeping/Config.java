@@ -65,7 +65,7 @@ public class Config {
    // compat
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
    public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
-   public static int enviromineSanityAt = 20;         // at which level (%) do you start losing sanity
+   public static int enviromineSanityAt = 20;          // at which level (%) do you start losing sanity
 
    // PRIVATE
    public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
@@ -160,8 +160,14 @@ public class Config {
       itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 100, "Multiplier for ItemFood " +
             "(most of the food). Hunger = gained caffeine");
 
-      enableCompatHarvestTN = cfg.getBoolean("enableCompatHarvestTN", "config.compatibility", enableCompatHarvestTN, "Enable extra " +
-            "patched code for Pam's HarvestTheNether (requires the mod to be loaded)");
+      enableCompatHarvestTN = cfg.getBoolean("enableCompatHarvestTN", "config.compatibility.harvestthenether", enableCompatHarvestTN,
+            "Enable extra patched code for Pam's HarvestTheNether (requires the mod to be loaded)");
+
+      enviromineSanityDecrease = cfg.getFloat("enviromineSanityDecrease", "config.compatibility.enviromine", enviromineSanityDecrease, 0,
+            100f, "How much sanity gets decreased every second (requires EnviroMine)");
+
+      enviromineSanityAt = cfg.getInt("enviromineSanityAt", "config.compatibility.enviromine", enviromineSanityAt, 0, Integer.MAX_VALUE,
+            "At how much tiredness (%) do you start losing sanity (requires EnviroMine)");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
