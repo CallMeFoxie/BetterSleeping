@@ -11,7 +11,7 @@ public class BetterSleepingCoreLoader implements IFMLLoadingPlugin {
 
    @Override
    public String[] getASMTransformerClass() {
-      return new String[]{BSTransformer.class.getName()};
+      return new String[]{PatchCollection.class.getName()};
    }
 
    @Override
