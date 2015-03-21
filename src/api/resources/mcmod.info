@@ -1,0 +1,16 @@
+[
+{
+  "modid": "enviromine",
+  "name": "EnviroMine",
+  "description": "Adds more realism to Minecraft with environmental effects, physics, gases and a cave dimension.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://enviromine.wordpress.com/",
+  "updateUrl": "",
+  "authorList": ["Funwayguy", "TimbuckTato", "GenDeathrow", "thislooksfun"],
+  "credits": "Big thanks to the IronArmy and EpicNation for all the hard work debugging this mod.",
+  "logoFile": "title.png",
+  "screenshots": [],
+  "dependencies": ["mod_MinecraftForge"]
+}
+]
