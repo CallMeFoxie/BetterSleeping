@@ -47,7 +47,7 @@ public class Config {
    public static int guiOffsetLeft = 4;               // sleepybar offset left
    public static int guiOffsetTop = 8;                // sleepybar offset top
    public static boolean enableSleepyBar = true;      // display sleepybar at all
-   public static boolean enableAlarmSound = true;     // play sound on woken up by alarm
+   public static double alarmSoundLevel = 1.0d;       // play sound on woken up by alarm
    public static boolean enableSleepMessage = true;   // enable sleep message related to how many people need to sleep
 
    // caffeine
@@ -104,10 +104,11 @@ public class Config {
 
       enableRingWatch = cfg.getBoolean("enableRingWatch", "gui", enableSleepCounter, "Enable Baubles Ring Watch");
 
-      enableAlarmSound = cfg.getBoolean("enableAlarmSound", "gui", enableAlarmSound, "Enable alarm sound when woken up");
+      alarmSoundLevel = cfg.get("gui", "alarmSoundLevel", alarmSoundLevel, "Value of the alarm (0 is off)").getDouble();
 
-      enablePositionReset = cfg.getBoolean("enablePositionReset", "config", enablePositionReset, "Enable position reset when falling " +
-            "asleep on the ground [EXPERIMENTAL]");
+      enablePositionReset =
+            cfg.getBoolean("enablePositionReset", "config", enablePositionReset, "Enable position reset when falling " +
+                  "asleep on the ground [EXPERIMENTAL]");
 
       enableSleepTicks = cfg.getBoolean("enableSleepTicks", "config", enableSleepTicks, "Enable world tick simulation while asleep " +
             "[CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");

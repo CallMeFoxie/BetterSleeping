@@ -1,17 +1,16 @@
 package cz.ondraster.bettersleeping.client.gui;
 
 import cz.ondraster.bettersleeping.BetterSleeping;
-import cz.ondraster.bettersleeping.container.ContainerAlarm;
 import cz.ondraster.bettersleeping.logic.MinecraftTime;
 import cz.ondraster.bettersleeping.network.MessageGuiAlarmButton;
 import cz.ondraster.bettersleeping.network.Network;
 import cz.ondraster.bettersleeping.tileentity.TileEntityAlarm;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiAlarm extends GuiContainer {
+public class GuiAlarm extends GuiScreen {
 
    public static final int BTN_HRUP = 1;
    public static final int BTN_HRDOWN = 2;
@@ -30,8 +29,10 @@ public class GuiAlarm extends GuiContainer {
 
    TileEntityAlarm tileEntity;
 
+   private int xSize, ySize, guiLeft, guiTop;
+
    public GuiAlarm(TileEntityAlarm alarm) {
-      super(new ContainerAlarm());
+      super();
       this.tileEntity = alarm;
 
    }
@@ -41,6 +42,9 @@ public class GuiAlarm extends GuiContainer {
    public void initGui() {
       xSize = 176;
       ySize = 100;
+      this.guiLeft = (this.width - this.xSize) / 2;
+      this.guiTop = (this.height - this.ySize) / 2;
+
       super.initGui();
       buttonList.clear();
       GuiButton tenHrUp = new GuiInvisibleButton(BTN_TENHRUP, guiLeft + 123, guiTop + 53, 9, 8);
@@ -64,8 +68,7 @@ public class GuiAlarm extends GuiContainer {
       buttonList.add(mntDown);
    }
 
-   @Override
-   protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+   protected void drawBG() {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.mc.getTextureManager().bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/gui/alarm.png"));
       int k = (this.width - this.xSize) / 2;
@@ -74,13 +77,19 @@ public class GuiAlarm extends GuiContainer {
    }
 
    @Override
+   public boolean doesGuiPauseGame() {
+      return false;
+   }
+
+   @Override
    public void drawScreen(int mouseX, int mouseY, float z) {
       super.drawScreen(mouseX, mouseY, z);
+      drawBG();
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_BLEND);
       MinecraftTime currentTime = MinecraftTime.getFromWorldTime(tileEntity.getWorldObj().getWorldTime());
       MinecraftTime alarmTime = MinecraftTime.getFromTime(tileEntity.getHour(), tileEntity.getMinute());
-      this.mc.getTextureManager().bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/gui/alarm.png"));
+      //this.mc.getTextureManager().bindTexture(new ResourceLocation(BetterSleeping.MODID, "textures/gui/alarm.png"));
       drawNumber(currentTime.getRealHour() / 10, 123, 21);
       drawNumber(currentTime.getRealHour() % 10, 133, 21);
       drawNumber(currentTime.getRealMinute() / 10, 143, 21);
