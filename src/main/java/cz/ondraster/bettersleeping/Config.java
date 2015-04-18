@@ -8,6 +8,9 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 
 public class Config {
+   // PRIVATE
+   public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
+
    // ALARM
    public static int defaultWakeUpTime = 0;           // daytime offset
    public static int oversleepWithoutAlarm = 2000;    // how much can you oversleep without alarm
@@ -35,7 +38,7 @@ public class Config {
    public static boolean sleepOnGround = true;        // sleep on ground
 
    // tweaks
-   public static boolean enablePositionReset = true;  // enable position reset when sleeping on ground
+   public static boolean enablePositionReset = false; // enable position reset when sleeping on ground
    public static double chanceToStopRain = 0.9;       // chance to stop rain
    public static boolean disableSleeping = false;     // disable sleeping alltogether
    public static boolean resetCounterOnDeath = true;  // reset counter on death
@@ -66,11 +69,6 @@ public class Config {
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
    public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
    public static int enviromineSanityAt = 20;          // at which level (%) do you start losing sanity
-
-   // PRIVATE
-   public static final int POTION_DURATION = 40;      // duration of potion effect in ticks [INTERNAL]
-
-
    private Configuration cfg;
 
    public Config(String filename) {
@@ -111,7 +109,7 @@ public class Config {
                   "asleep on the ground [EXPERIMENTAL]");
 
       enableSleepTicks = cfg.getBoolean("enableSleepTicks", "config", enableSleepTicks, "Enable world tick simulation while asleep " +
-            "[CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");
+            "(Tile Entities only) [CAN CAUSE HIGH SERVER PERFORMANCE SPIKES]");
 
       enableAlarmClock = cfg.getBoolean("enableAlarmClock", "config", enableAlarmClock, "Enable Alarm clock");
 
