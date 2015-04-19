@@ -14,6 +14,10 @@ public class CompatibilityEnviroMine {
    }
 
    public static void changeSanity(EntityPlayer player, float offset) {
-      getTracker(player).sanity += offset;
+      try {
+         getTracker(player).sanity += offset;
+      } catch (Exception e) {
+         // sometimes may be null or any exception from EM that I cannot predict. Better than crashing I guess?
+      }
    }
 }
