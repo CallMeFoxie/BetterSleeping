@@ -67,24 +67,26 @@ public class Alarm {
       long curTime = world.getWorldTime();
       long reallySleptTime = 0;
 
-      if (alarms.size() == 0) {
-         long i = curTime + 24000L;
-         i -= i % 24000;
-         i += Config.defaultWakeUpTime;
-         i += world.rand.nextInt(Config.oversleepWithoutAlarm);
-         reallySleptTime = i - world.getWorldTime();
-         world.setWorldTime(i);
-      } else {
-         long i = curTime;
-         if (mntTotal <= curTime % 24000) // have to roll to another day
-            i += 24000L;
+      if (!Config.disableTimeChange) {
+         if (alarms.size() == 0) {
+            long i = curTime + 24000L;
+            i -= i % 24000;
+            i += Config.defaultWakeUpTime;
+            i += world.rand.nextInt(Config.oversleepWithoutAlarm);
+            reallySleptTime = i - world.getWorldTime();
+            world.setWorldTime(i);
+         } else {
+            long i = curTime;
+            if (mntTotal <= curTime % 24000) // have to roll to another day
+               i += 24000L;
 
-         i -= i % 24000; // align to the next morning
-         // append new time
-         i += mntTotal;
-         i += world.rand.nextInt(Config.oversleepWithAlarm / alarms.size());
-         reallySleptTime = i - world.getWorldTime();
-         world.setWorldTime(i);
+            i -= i % 24000; // align to the next morning
+            // append new time
+            i += mntTotal;
+            i += world.rand.nextInt(Config.oversleepWithAlarm / alarms.size());
+            reallySleptTime = i - world.getWorldTime();
+            world.setWorldTime(i);
+         }
       }
 
       MinecraftTime time = MinecraftTime.getFromWorldTime(world.getWorldTime());

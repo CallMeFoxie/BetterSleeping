@@ -45,6 +45,7 @@ public class Config {
    public static boolean enableSleepTicks = false;    // enable tick simulation when asleep
    public static double percentPeopleToSleep = 0.5;   // How many people need to sleep
    public static boolean enableSleepCounter = true;   // enable sleep counter at all
+   public static boolean disableTimeChange = false;   // disable time changing by sleeping
 
    // gui
    public static int guiOffsetLeft = 4;               // sleepybar offset left
@@ -167,6 +168,8 @@ public class Config {
 
       enviromineSanityAt = cfg.getInt("enviromineSanityAt", "config.compatibility.enviromine", enviromineSanityAt, 0, Integer.MAX_VALUE,
             "At how much tiredness (%) do you start losing sanity (requires EnviroMine)");
+
+      disableTimeChange = cfg.getBoolean("disableTimeChange", "config", disableTimeChange, "Disable time changing when sleeping");
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
