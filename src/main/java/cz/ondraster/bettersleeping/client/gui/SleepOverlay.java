@@ -8,6 +8,7 @@ import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.item.ItemClass;
 import cz.ondraster.bettersleeping.logic.MinecraftTime;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Items;
@@ -29,6 +30,7 @@ public class SleepOverlay extends OptionalGuiOverlay {
 
    @SubscribeEvent
    public void onGuiRender(RenderGameOverlayEvent event) {
+      OpenGlHelper.glBlendFunc(770, 771, 0, 1);
 
       if ((event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE && event.type != RenderGameOverlayEvent.ElementType.JUMPBAR) ||
             event.isCancelable()) {
