@@ -1,19 +1,18 @@
 package cz.ondraster.bettersleeping;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.relauncher.Side;
 import cz.ondraster.bettersleeping.compat.CompatibilityMorpheus;
+import cz.ondraster.bettersleeping.compat.CompatibilityOpenBlocks;
 import cz.ondraster.bettersleeping.proxy.ProxyCommon;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = BetterSleeping.MODID, name = BetterSleeping.NAME, version = BetterSleeping.VERSION)
 public class BetterSleeping {
@@ -47,6 +46,10 @@ public class BetterSleeping {
    public void postinit(FMLPostInitializationEvent event) {
       if (Loader.isModLoaded("Morpheus")) {
          CompatibilityMorpheus morpheus = new CompatibilityMorpheus();
+      }
+
+      if (ModAPIManager.INSTANCE.hasAPI("OpenBlocks|API")) {
+         MinecraftForge.EVENT_BUS.register(new CompatibilityOpenBlocks());
       }
    }
 
