@@ -1,5 +1,5 @@
 def VersionMajor = 0
-def VersionMinor = 9
+def VersionMinor = 10
 
 buildscript {
     repositories {
