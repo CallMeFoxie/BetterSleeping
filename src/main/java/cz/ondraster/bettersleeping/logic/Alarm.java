@@ -106,6 +106,11 @@ public class Alarm {
                PlayerData property = BSSavedData.instance().getData(player);
                property.increaseSleepCounter((long) (reallySleptTime * Config.sleepPerSleptTick));
                property.decreaseCaffeineLevel((reallySleptTime * Config.caffeinePerTick));
+
+               // decrease hunger
+               double decreaseHunger = Math.max(0, reallySleptTime * Config.hungerPerSleptTick);
+
+               player.getFoodStats().addStats((int) -decreaseHunger, 0f);
             }
          }
 

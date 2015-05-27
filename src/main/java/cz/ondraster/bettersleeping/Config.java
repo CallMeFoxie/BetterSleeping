@@ -28,6 +28,7 @@ public class Config {
    public static int ticksPerSleepCounter = 4;        // how many ticks it takes to add tiredness
    public static int tirednessJump = 8;               // how many tiredness is added on a jump
    public static double multiplicatorWhenSprinting = 2;  // how many times more you get tired when sprinting
+   public static double hungerPerSleptTick = 0.00001d;  // how much hunger you lose per slept tick
 
    // GAIN
    public static double sleepPerSleptTick = 0.5;      // how much tiredness is removed on a slept tick
@@ -170,6 +171,9 @@ public class Config {
             "At how much tiredness (%) do you start losing sanity (requires EnviroMine)");
 
       disableTimeChange = cfg.getBoolean("disableTimeChange", "config", disableTimeChange, "Disable time changing when sleeping");
+
+      hungerPerSleptTick = cfg.get("config", "hungerPerSleptTick", hungerPerSleptTick, "How much hunger is lost for slept tick [0 = " +
+            "none]").getDouble();
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
