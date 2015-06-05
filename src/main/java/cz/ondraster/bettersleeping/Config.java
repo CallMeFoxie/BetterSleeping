@@ -68,6 +68,7 @@ public class Config {
    public static float itemFoodHungerMult = 6.0f;     // multiplier for ItemFood (most of the food). Hunger = gained caffeine
 
    // compat
+   public static boolean supernaturalImmunity = true; // enable Witchery Creatures being immune from Sleep Counting
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
    public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
    public static int enviromineSanityAt = 20;          // at which level (%) do you start losing sanity
@@ -160,6 +161,9 @@ public class Config {
 
       itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 100, "Multiplier for ItemFood " +
             "(most of the food). Hunger = gained caffeine");
+
+      supernaturalImmunity = cfg.getBoolean("supernaturalImmunity", "config.compatibility.witchery", supernaturalImmunity,
+            "Witchery supernatural creatures are immune from sleep effects");
 
       enableCompatHarvestTN = cfg.getBoolean("enableCompatHarvestTN", "config.compatibility.harvestthenether", enableCompatHarvestTN,
             "Enable extra patched code for Pam's HarvestTheNether (requires the mod to be loaded)");
