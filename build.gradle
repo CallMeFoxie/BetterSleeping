@@ -1,5 +1,5 @@
 def VersionMajor = 0
-def VersionMinor = 10
+def VersionMinor = 11
 
 buildscript {
     repositories {
@@ -29,7 +29,7 @@ group = "cz.ondraster.bettersleeping"
 archivesBaseName = "BetterSleeping"
 
 minecraft {
-    version = "1.7.10-10.13.2.1291"
+    version = "1.7.10-10.13.4.1470"
     runDir = "run"
     replace '@VERSION@', project.version
 }
