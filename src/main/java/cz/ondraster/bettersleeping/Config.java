@@ -154,11 +154,12 @@ public class Config {
       tirednessPerCaffeine = cfg.getInt("tirednessPerCaffeine", "config.caffeine", tirednessPerCaffeine, 1, 23999, "How much tiredness " +
             "you regain for drinking/eating valid item (NOT ItemFood)");
 
-      itemFoodSaturationMult = cfg.getFloat("itemFoodSaturationMult", "config.caffeine", itemFoodSaturationMult, 0, 1000, "Multiplier for" +
+      itemFoodSaturationMult = cfg.getFloat("itemFoodSaturationMult", "config.caffeine", itemFoodSaturationMult, 0, 23999, "Multiplier " +
+            "for" +
             " " +
             "ItemFood (most of the food). Saturation = regained tiredness");
 
-      itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 100, "Multiplier for ItemFood " +
+      itemFoodHungerMult = cfg.getFloat("itemFoodHungerMult", "config.caffeine", itemFoodHungerMult, 0, 23999, "Multiplier for ItemFood " +
             "(most of the food). Hunger = gained caffeine");
 
       enableCompatHarvestTN = cfg.getBoolean("enableCompatHarvestTN", "config.compatibility.harvestthenether", enableCompatHarvestTN,
