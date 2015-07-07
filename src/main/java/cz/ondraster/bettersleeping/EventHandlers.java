@@ -87,12 +87,12 @@ public class EventHandlers {
             data.ticksSinceUpdate = 0;
 
             if (!event.player.capabilities.isCreativeMode)
-               data.decreaseSleepCounter();
+               data.decreaseSleepLevel();
 
          }
 
          if (event.player.isPlayerSleeping() && Config.giveSleepCounterOnSleep > 0) {
-            data.increaseSleepCounter(Config.giveSleepCounterOnSleep);
+            data.increaseSleepLevel(Config.giveSleepCounterOnSleep);
          }
 
          // send update about tiredness to the client
@@ -111,7 +111,7 @@ public class EventHandlers {
          }
 
          if (Config.enviromineSanityDecrease > 0 && Loader.isModLoaded("enviromine")) {
-            if (Config.enviromineSanityAt > ((float) data.getSleepCounter() / Config.maximumSleepCounter) * 100f)
+            if (Config.enviromineSanityAt > ((float) data.getSleepLevel() / Config.maximumSleepCounter) * 100f)
                CompatibilityEnviroMine.changeSanity(event.player, Config.enviromineSanityDecrease * (-1));
          }
 
@@ -137,7 +137,7 @@ public class EventHandlers {
       if (Config.enableSleepCounter) {
          PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
 
-         if (data.getSleepCounter() >= Config.maximumSleepCounter) {
+         if (data.getSleepLevel() >= Config.maximumSleepCounter) {
             event.entityPlayer.addChatComponentMessage(new ChatComponentTranslation("msg.notTired"));
             event.result = EntityPlayer.EnumStatus.OTHER_PROBLEM;
          }
@@ -173,9 +173,9 @@ public class EventHandlers {
 
          PlayerData data = BSSavedData.instance().getData(player);
          if (player.isSprinting())
-            data.decreaseSleepCounter((long) (Config.tirednessJump * Config.multiplicatorWhenSprinting));
+            data.decreaseSleepLevel((long) (Config.tirednessJump * Config.multiplicatorWhenSprinting));
          else
-            data.decreaseSleepCounter(Config.tirednessJump);
+            data.decreaseSleepLevel(Config.tirednessJump);
 
          BSSavedData.instance().markDirty();
 
@@ -196,10 +196,18 @@ public class EventHandlers {
             hunger *= Config.itemFoodHungerMult;
             saturation *= Config.itemFoodSaturationMult;
             data.increaseCaffeineLevel(hunger);
-            data.increaseSleepCounter((int) saturation);
+            data.increaseSleepLevel((int) saturation);
          } else {
             data.increaseCaffeineLevel(Config.caffeinePerItem);
-            data.increaseSleepCounter(Config.tirednessPerCaffeine);
+            data.increaseSleepLevel(Config.tirednessPerCaffeine);
+         }
+
+         if (CaffeineLogic.isPill(event.item)) {
+            data.increasePillLevel(Config.pillPerPill);
+         }
+
+         if (CaffeineLogic.isSleepingPill(event.item)) {
+            data.decreaseSleepLevel(Config.sleepingPillAmount);
          }
 
          BSSavedData.instance().markDirty();

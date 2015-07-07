@@ -104,7 +104,7 @@ public class Alarm {
 
             if (Config.enableSleepCounter) {
                PlayerData property = BSSavedData.instance().getData(player);
-               property.increaseSleepCounter((long) (reallySleptTime * Config.sleepPerSleptTick));
+               property.increaseSleepLevel((long) (reallySleptTime * Config.sleepPerSleptTick));
                property.decreaseCaffeineLevel((reallySleptTime * Config.caffeinePerTick));
 
                // decrease hunger
@@ -134,7 +134,7 @@ public class Alarm {
 
    public static boolean canSleep(EntityPlayer player) {
       PlayerData property = BSSavedData.instance().getData(player);
-      if (property.getSleepCounter() < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter &&
+      if (property.getSleepLevel() < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter &&
             Config.sleepOnGround) {
          return true;
       }

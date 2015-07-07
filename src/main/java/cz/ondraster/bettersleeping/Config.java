@@ -60,17 +60,25 @@ public class Config {
    public static int caffeineDebuffsAt = 50;          // when you start getting debuff
    public static int deathFromCaffeineOverdose = 70; // at what level you will die from overdosing ("caffeine intoxication")
    public static String[] caffeineOredicts = {"foodCoffee", "foodTea", "foodCoffeeconleche", "foodTea", "foodRaspberryicedtea",
-         "foodChaitea", "foodEspresso", "foodMochaicecream", "cropCoffee"};   // what items will be looked for the item in the oredict
+         "foodChaitea", "foodEspresso", "foodMochaicecream", "cropCoffee", "pillCoffee"};   // what items will be looked for the item in
+   // the oredict
    public static float caffeinePerItem = 10;          // how much caffeine is absorbed per item
    public static float caffeinePerTick = .005f;       // how much caffeine is removed per tick
    public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
    public static float itemFoodSaturationMult = 200.0f; // multiplier for ItemFood (most of the food). Saturation = regained tiredness
    public static float itemFoodHungerMult = 6.0f;     // multiplier for ItemFood (most of the food). Hunger = gained caffeine
+   public static long caffeinePillAmount = 10;         // how much tiredness is added per caffeine pill
+   public static long sleepingPillAmount = 100;       // how much tiredness is removed per sleeping pill
+   public static double pillPerPill = 10;             // how much pill you get per pill
+   public static int maximumPillLevel = 30;           // how much maximum pill level you reach
 
    // compat
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
    public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
    public static int enviromineSanityAt = 20;          // at which level (%) do you start losing sanity
+   public static String[] sleepingPillOredicts = {"pillSleeping"};
+   public static String[] pillOredicts = {"pill"};
+
    private Configuration cfg;
 
    public Config(String filename) {

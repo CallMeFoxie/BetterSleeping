@@ -21,19 +21,19 @@ import java.util.List;
 public class DebuffLogic {
 
    public static void updateClientIfNeeded(EntityPlayer player, PlayerData data) {
-      if ((double) (Math.abs(data.getSleepCounter() - data.lastUpdate)) / Config.maximumSleepCounter >
+      if ((double) (Math.abs(data.getSleepLevel() - data.lastUpdate)) / Config.maximumSleepCounter >
             1.0d / SleepOverlay.MAX_OFFSET && player instanceof EntityPlayerMP) {
          Network.networkChannel
-               .sendTo(new MessageUpdateTiredness(data.getSleepCounter()), (EntityPlayerMP) player);
-         data.lastUpdate = data.getSleepCounter();
+               .sendTo(new MessageUpdateTiredness(data.getSleepLevel()), (EntityPlayerMP) player);
+         data.lastUpdate = data.getSleepLevel();
       }
    }
 
    public static void checkForDebuffs(TickEvent.PlayerTickEvent event, PlayerData data) {
       List<PlayerDebuff> debuffs = BetterSleepingAPI.getDebuffs();
       for (PlayerDebuff debuff : debuffs) {
-         if (debuff.enable && data.getSleepCounter() < debuff.tiredLevel) {
-            double percentTired = (debuff.tiredLevel - data.getSleepCounter()) / (double) (debuff.tiredLevel);
+         if (debuff.enable && data.getSleepLevel() < debuff.tiredLevel) {
+            double percentTired = (debuff.tiredLevel - data.getSleepLevel()) / (double) (debuff.tiredLevel);
             int scale = (int) Math.ceil(percentTired * debuff.maxScale) - 1;
             event.player.addPotionEffect(
                   new PotionEffect(debuff.potion.getId(), Config.POTION_DURATION * 2, scale));
@@ -41,7 +41,7 @@ public class DebuffLogic {
       }
 
       // should fall asleep on the ground
-      if (data.getSleepCounter() == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
+      if (data.getSleepLevel() == 0 && !event.player.isPlayerSleeping() && Config.sleepOnGround) {
          boolean result = MinecraftForge.EVENT_BUS.post(new WorldSleepEvent.SleepOnGround(event.player));
 
          if (!result) {
