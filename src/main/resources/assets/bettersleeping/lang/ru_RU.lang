@@ -1,5 +1,11 @@
 tile.alarm.name=Будильник
 msg.notTired=Вы ещё не устали.
 msg.tooTired=Вы слишком устали. Вам просто нужно поспать...
-msg.wakeUp=Проснись! Это %s
+msg.wakeUp=Проснись! Сейчас %s
 item.ringwatch.name=Наручные часы на кольце
+item.pillSleeping.name=Снотворное
+item.pillCaffeine.name=Таблетка кофеина
+msg.playersSleeping=%s%% игроков сейчас спит. Прыгайте в кровать и присоединяйтесь к ним!
+msg.goodNight=Спокойной ночи!
+death.attack.overdose=%s умер от интоксикации кофеином!
+death.attack.pill=%s умер от употребления таблеток!
