@@ -573,7 +573,7 @@ public class EM_EventManager// extends LockedClass
 				}
 				
 				boolean isWater;
-				
+
 				if(world.getBlock(i, j, k) == Blocks.water || world.getBlock(i, j, k) == Blocks.flowing_water)
 				{
 					isWater = true;
@@ -675,7 +675,7 @@ public class EM_EventManager// extends LockedClass
 				}
 				
 				boolean isWater;
-				
+
 				if(entityPlayer.worldObj.getBlock(i, j, k) == Blocks.flowing_water || entityPlayer.worldObj.getBlock(i, j, k) == Blocks.water)
 				{
 					isWater = true;
@@ -1661,7 +1661,7 @@ public class EM_EventManager// extends LockedClass
 			EM_Settings.rotProperties.clear();
 			EM_Settings.caveGenProperties.clear();
 			EM_Settings.caveSpawnProperties.clear();;
-			
+
 			EM_ConfigHandler.initConfig();
 			
 			EnviroMine.caves.RefreshSpawnList();

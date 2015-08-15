@@ -238,7 +238,7 @@ public class BlockGas extends Block implements ITileEntityProvider
 				return true;
 			} else if(side > 1) // Sides
 			{
-				
+
 				if(sideYMin > yMin || sideYMax < yMax)
 				{
 					return true;

@@ -79,7 +79,7 @@ public class HudItemAirQuality extends HudItem
 	@Override
 	public boolean isBlinking()
 	{
-		
+
 		if(blink() && Gui_EventManager.tracker.airQuality < 25)
 		{
 			return true;

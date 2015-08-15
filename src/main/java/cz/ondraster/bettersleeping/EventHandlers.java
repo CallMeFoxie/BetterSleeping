@@ -12,12 +12,17 @@ import cz.ondraster.bettersleeping.logic.CaffeineLogic;
 import cz.ondraster.bettersleeping.logic.DebuffLogic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
+import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+
+import java.util.Random;
 
 public class EventHandlers {
 
@@ -183,12 +188,33 @@ public class EventHandlers {
    }
 
    @SubscribeEvent
+   public void onPlayerWakeUpEvent(PlayerWakeUpEvent event) {
+      if (event.entityPlayer.worldObj.isRemote)
+         return;
+
+      Random rand = event.entityPlayer.worldObj.rand;
+
+      if (rand.nextFloat() < Config.chanceToGetBadNight) {
+         if (rand.nextFloat() >= 0.5f)
+            event.entityPlayer.addPotionEffect(new PotionEffect(Potion.weakness.getId(), 60, rand.nextInt(2) + 1));
+         else
+            event.entityPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), 60, rand.nextInt(2) + 1));
+      } else if (rand.nextFloat() < Config.chanceToGetGoodNight) {
+         if (rand.nextFloat() >= 0.5f)
+            event.entityPlayer.addPotionEffect(new PotionEffect(Potion.heal.getId(), 60, rand.nextInt(2) + 1));
+         else
+            event.entityPlayer.addPotionEffect(new PotionEffect(Potion.regeneration.getId(), 60, rand.nextInt(2) + 1));
+      }
+   }
+
+   @SubscribeEvent
    public void onPlayerUseItem(PlayerUseItemEvent.Finish event) {
       if (event.entityPlayer.worldObj.isRemote)
          return;
 
+      PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
+
       if (CaffeineLogic.isCoffee(event.item)) {
-         PlayerData data = BSSavedData.instance().getData(event.entityPlayer);
          if (event.result.getItem() instanceof ItemFood) {
             ItemFood food = (ItemFood) event.result.getItem();
             float hunger = food.func_150905_g(event.result);
@@ -202,17 +228,20 @@ public class EventHandlers {
             data.increaseSleepLevel(Config.tirednessPerCaffeine);
          }
 
-         if (CaffeineLogic.isPill(event.item)) {
-            data.increasePillLevel(Config.pillPerPill);
-         }
-
-         if (CaffeineLogic.isSleepingPill(event.item)) {
-            data.decreaseSleepLevel(Config.sleepingPillAmount);
-         }
-
          BSSavedData.instance().markDirty();
-         // send update about tiredness to the client
-         DebuffLogic.updateClientIfNeeded(event.entityPlayer, data);
       }
+
+      if (CaffeineLogic.isPill(event.item)) {
+         data.increasePillLevel(Config.pillPerPill);
+         BSSavedData.instance().markDirty();
+      }
+
+      if (CaffeineLogic.isSleepingPill(event.item)) {
+         data.decreaseSleepLevel(Config.sleepingPillAmount);
+         BSSavedData.instance().markDirty();
+      }
+
+      // send update about tiredness to the client
+      DebuffLogic.updateClientIfNeeded(event.entityPlayer, data);
    }
 }

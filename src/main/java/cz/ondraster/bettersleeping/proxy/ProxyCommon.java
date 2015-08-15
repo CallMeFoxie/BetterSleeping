@@ -17,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class ProxyCommon {
    public void preinit(FMLPreInitializationEvent event) {
@@ -35,13 +36,34 @@ public class ProxyCommon {
 
       NetworkRegistry.INSTANCE.registerGuiHandler(BetterSleeping.INSTANCE, new GuiHandlers());
 
-      // register recipes
-      GameRegistry.addRecipe(
-            new ShapedOreRecipe(new ItemStack(BlockClass.blockAlarm), "iii", "igi", "srs", 'i', Items.iron_ingot, 'g', Items.gold_nugget,
-                  's', Blocks.stone, 'r', Items.redstone));
-      GameRegistry.addRecipe(
-            new ShapedOreRecipe(new ItemStack(ItemClass.itemRingWatch), "iii", "igi", "iri", 'i', Items.iron_ingot, 'g', Items.gold_nugget,
-                  'r', Items.redstone));
+      if (BlockClass.blockAlarm != null)
+         // register recipes
+         GameRegistry.addRecipe(
+               new ShapedOreRecipe(new ItemStack(BlockClass.blockAlarm), "iii", "igi", "srs", 'i', Items.iron_ingot, 'g', Items.gold_nugget,
+                     's', Blocks.stone, 'r', Items.redstone));
+
+      if (ItemClass.itemRingWatch != null)
+         GameRegistry.addRecipe(
+               new ShapedOreRecipe(new ItemStack(ItemClass.itemRingWatch), "iii", "igi", "iri", 'i', Items.iron_ingot, 'g',
+                     Items.gold_nugget, 'r', Items.redstone));
+
+      if (ItemClass.itemPillCaffeine != null) {
+         GameRegistry.addRecipe(
+               new ShapelessOreRecipe(new ItemStack(ItemClass.itemPillCaffeine), Items.nether_wart, Items.potionitem, Blocks
+                     .brown_mushroom, Items.sugar, Items.speckled_melon));
+         GameRegistry.addRecipe(
+               new ShapelessOreRecipe(new ItemStack(ItemClass.itemPillCaffeine), Items.nether_wart, Items.potionitem, Blocks
+                     .red_mushroom, Items.sugar, Items.speckled_melon));
+      }
+
+      if (ItemClass.itemPillSleeping != null) {
+         GameRegistry.addRecipe(
+               new ShapelessOreRecipe(new ItemStack(ItemClass.itemPillCaffeine), Items.nether_wart, Items.potionitem, Blocks
+                     .brown_mushroom, Items.sugar, "dyeBrown"));
+         GameRegistry.addRecipe(
+               new ShapelessOreRecipe(new ItemStack(ItemClass.itemPillCaffeine), Items.nether_wart, Items.potionitem, Blocks
+                     .red_mushroom, Items.sugar, Items.speckled_melon));
+      }
    }
 
    public EntityPlayer getPlayer() {

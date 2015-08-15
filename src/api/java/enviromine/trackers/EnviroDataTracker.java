@@ -584,7 +584,7 @@ public class EnviroDataTracker// extends LockedClass
 		} else
 		{
 			EnviroDataTracker tracker = EM_StatusManager.lookupTracker(entity);
-			
+
 			if(tracker != null && !tracker.isDisabled && tracker.trackedEntity == entity)
 			{
 				return false;

@@ -67,17 +67,23 @@ public class Config {
    public static int tirednessPerCaffeine = 200;      // how much he regains for a cup of coffee
    public static float itemFoodSaturationMult = 200.0f; // multiplier for ItemFood (most of the food). Saturation = regained tiredness
    public static float itemFoodHungerMult = 6.0f;     // multiplier for ItemFood (most of the food). Hunger = gained caffeine
-   public static long caffeinePillAmount = 10;         // how much tiredness is added per caffeine pill
-   public static long sleepingPillAmount = 100;       // how much tiredness is removed per sleeping pill
-   public static double pillPerPill = 10;             // how much pill you get per pill
-   public static int maximumPillLevel = 30;           // how much maximum pill level you reach
 
    // compat
    public static boolean enableCompatHarvestTN = true; // enable Nether's isSurfaceWorld override for
    public static float enviromineSanityDecrease = .2f; // how much sanity do you lose per check (20 ticks)
    public static int enviromineSanityAt = 20;          // at which level (%) do you start losing sanity
+
+   // pills
    public static String[] sleepingPillOredicts = {"pillSleeping"};
    public static String[] pillOredicts = {"pill"};
+   public static int caffeinePillAmount = 1000;         // how much tiredness is added per caffeine pill
+   public static int sleepingPillAmount = 2000;       // how much tiredness is removed per sleeping pill
+   public static float pillPerPill = 10;              // how much pill you get per pill
+   public static int maximumPillLevel = 30;           // how much maximum pill level you reach
+
+   // bad night
+   public static float chanceToGetBadNight = 0.3f;    // chance to get bad night - morning debuffs
+   public static float chanceToGetGoodNight = 0.5f;   // chance to geta good night and fully heal
 
    private Configuration cfg;
 
@@ -183,6 +189,22 @@ public class Config {
 
       hungerPerSleptTick = cfg.get("config", "hungerPerSleptTick", hungerPerSleptTick, "How much hunger is lost for slept tick [0 = " +
             "none]").getDouble();
+
+      sleepingPillOredicts = cfg.getStringList("sleepingPillOredicts", "pill", sleepingPillOredicts, "OreDict entries that are treated as" +
+            " sleeping pill");
+
+      pillOredicts = cfg.getStringList("pillOredicts", "pill", pillOredicts, "OreDict entries that are treated as pills");
+      caffeinePillAmount = cfg.getInt("caffeinePillAmount", "pill", caffeinePillAmount, 0, 23999, "how much tiredness is added per " +
+            "caffeine pill");
+      sleepingPillAmount = cfg.getInt("sleepingPillAmount", "pill", sleepingPillAmount, 0, 23999, "how much tiredness is removed per " +
+            "sleeping pill");
+      pillPerPill = cfg.getFloat("pillPerPill", "pill", pillPerPill, 0, 23999f, "amount of 'pill' gained per munched pill");
+      maximumPillLevel = cfg.getInt("maximumPillLevel", "pill", maximumPillLevel, 0, 23999, "maximum 'pill' level in your blood");
+
+      chanceToGetBadNight = cfg.getFloat("chanceToGetBadNight", "config", chanceToGetBadNight, 0, 1f, "chance to get bad morning debuffs");
+      chanceToGetGoodNight = cfg.getFloat("chanceToGetGoodNight", "config", chanceToGetGoodNight, 0, 1f, "chance to get good morning " +
+            "buffs");
+
 
       // debuffs
       String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};

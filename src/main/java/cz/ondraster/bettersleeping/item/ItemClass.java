@@ -1,5 +1,6 @@
 package cz.ondraster.bettersleeping.item;
 
+import cz.ondraster.bettersleeping.BetterSleeping;
 import cz.ondraster.bettersleeping.Config;
 import cz.ondraster.bettersleeping.Registrator;
 import net.minecraft.item.Item;
@@ -17,14 +18,14 @@ public class ItemClass {
       }
 
       if (Config.sleepingPillAmount > 0) {
-         itemPillSleeping = new ItemPill().setTextureName("pill_sleeping").setUnlocalizedName("pillSleeping");
+         itemPillSleeping = new ItemPill().setTextureName(BetterSleeping.MODID + ":pill").setUnlocalizedName("pillSleeping");
          Registrator.registerItem(itemPillSleeping);
          OreDictionary.registerOre("pillSleeping", itemPillSleeping);
          OreDictionary.registerOre("pill", itemPillSleeping);
       }
 
       if (Config.caffeinePillAmount > 0) {
-         itemPillCaffeine = new ItemPill().setTextureName("pill_caffeine").setUnlocalizedName("pillCaffeine");
+         itemPillCaffeine = new ItemPill().setTextureName(BetterSleeping.MODID + ":pill").setUnlocalizedName("pillCaffeine");
          Registrator.registerItem(itemPillCaffeine);
          OreDictionary.registerOre("pillCaffeine", itemPillCaffeine);
          OreDictionary.registerOre("pill", itemPillCaffeine);
