@@ -18,12 +18,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class SleepOverlay extends OptionalGuiOverlay {
-   public static final int BTN_WIDTH = 8;
-   public static final int BAR_WIDTH = 32;
+   public static final int BTN_WIDTH  = 8;
+   public static final int BAR_WIDTH  = 32;
    public static final int MAX_OFFSET = BAR_WIDTH - BTN_WIDTH;
    public static final int BAR_HEIGHT = 8;
 
-   public static final int ICON_WIDTH = 16;
+   public static final int ICON_WIDTH  = 16;
    public static final int ICON_HEIGHT = 16;
 
    public static long sleepCounter = 0;
@@ -32,8 +32,8 @@ public class SleepOverlay extends OptionalGuiOverlay {
    public void onGuiRender(RenderGameOverlayEvent event) {
       OpenGlHelper.glBlendFunc(770, 771, 0, 1);
 
-      if ((event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE && event.type != RenderGameOverlayEvent.ElementType.JUMPBAR) ||
-            event.isCancelable()) {
+      if ((event.type != RenderGameOverlayEvent.ElementType.ALL) ||
+              event.isCancelable()) {
          return;
       }
 
@@ -52,7 +52,7 @@ public class SleepOverlay extends OptionalGuiOverlay {
 
       mgr.bindTexture(TextureMap.locationItemsTexture);
       drawTexturedModelRectFromIcon(Config.guiOffsetLeft + BAR_WIDTH + 4, Config.guiOffsetTop - ((ICON_HEIGHT - BAR_HEIGHT) / 2),
-            Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
+              Items.bed.getIcon(bed, 1), ICON_WIDTH, ICON_HEIGHT);
 
       renderTimeOverlay();
 
@@ -74,7 +74,7 @@ public class SleepOverlay extends OptionalGuiOverlay {
             if (itemStack.getItem() == ItemClass.itemRingWatch) {
                MinecraftTime time = MinecraftTime.getFromWorldTime(Minecraft.getMinecraft().theWorld.getWorldTime());
                drawCenteredString(Minecraft.getMinecraft().fontRenderer, time.toString(), Config.guiOffsetLeft + BAR_WIDTH / 2,
-                     Config.guiOffsetTop + 16, 0xFFFFFF);
+                       Config.guiOffsetTop + 16, 0xFFFFFF);
                return;
             }
          }
