@@ -18,7 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class BetterSleeping {
    public static final String MODID = "bettersleeping";
    public static final String NAME = "Better Sleeping";
-   public static final String AUTHOR = "OndraSter";
+   public static final String AUTHOR = "CallMeFoxie";
    public static final String VERSION = "@VERSION@";
 
    @SidedProxy(clientSide = "cz.ondraster.bettersleeping.proxy.ProxyClient", serverSide = "cz.ondraster.bettersleeping.proxy.ProxyCommon")
