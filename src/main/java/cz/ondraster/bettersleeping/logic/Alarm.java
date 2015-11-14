@@ -68,15 +68,13 @@ public class Alarm {
       long reallySleptTime = 0;
 
       if (!Config.disableTimeChange) {
+         long i = curTime;
          if (alarms.size() == 0) {
-            long i = curTime + 24000L;
+            i += 24000L;
             i -= i % 24000;
             i += Config.defaultWakeUpTime;
             i += world.rand.nextInt(Config.oversleepWithoutAlarm);
-            reallySleptTime = i - world.getWorldTime();
-            world.setWorldTime(i);
          } else {
-            long i = curTime;
             if (mntTotal <= curTime % 24000) // have to roll to another day
                i += 24000L;
 
@@ -84,9 +82,23 @@ public class Alarm {
             // append new time
             i += mntTotal;
             i += world.rand.nextInt(Config.oversleepWithAlarm / alarms.size());
-            reallySleptTime = i - world.getWorldTime();
-            world.setWorldTime(i);
          }
+
+         if (Config.wakeUpWithFirstPerson) {
+            for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
+               if (player.isPlayerSleeping()) {
+                  PlayerData property = BSSavedData.instance().getData(player);
+                  long maxEnergy = Config.maximumSleepCounter - property.getSleepLevel();
+                  maxEnergy /= Config.sleepPerSleptTick;
+                  if ((maxEnergy + world.getWorldTime() < i) && (maxEnergy > 0))
+                     i = maxEnergy + world.getWorldTime();
+               }
+            }
+         }
+
+         reallySleptTime = i - world.getWorldTime();
+         world.setWorldTime(i);
+
       }
 
       MinecraftTime time = MinecraftTime.getFromWorldTime(world.getWorldTime());
@@ -99,13 +111,16 @@ public class Alarm {
                //player.playSound(BetterSleeping.MODID + ":alarm", 0.5F, 2.0F);
                if (Config.alarmSoundLevel > 0)
                   world.playSoundEffect(player.posX, player.posY, player.posZ, BetterSleeping.MODID + ":alarm", (float) Config
-                        .alarmSoundLevel, 1F);
+                          .alarmSoundLevel, 1F);
             }
 
             if (Config.enableSleepCounter) {
                PlayerData property = BSSavedData.instance().getData(player);
                property.increaseSleepLevel((long) (reallySleptTime * Config.sleepPerSleptTick));
                property.decreaseCaffeineLevel((reallySleptTime * Config.caffeinePerTick));
+
+               if (property.getSleepLevel() > Config.maximumSleepCounter)
+                  property.decreaseSleepLevel(property.getSleepLevel() - Config.maximumSleepCounter);
 
                // decrease hunger
                double decreaseHunger = Math.max(0, reallySleptTime * Config.hungerPerSleptTick);
@@ -135,7 +150,7 @@ public class Alarm {
    public static boolean canSleep(EntityPlayer player) {
       PlayerData property = BSSavedData.instance().getData(player);
       if (property.getSleepLevel() < Config.maximumSleepCounter && Config.enableDebuffs && Config.enableSleepCounter &&
-            Config.sleepOnGround) {
+              Config.sleepOnGround) {
          return true;
       }
 
