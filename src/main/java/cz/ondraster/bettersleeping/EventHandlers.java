@@ -91,13 +91,13 @@ public class EventHandlers {
          if (data.ticksSinceUpdate >= ticksPerSleepCounter) {
             data.ticksSinceUpdate = 0;
 
-            if (!event.player.capabilities.isCreativeMode)
+            if (!event.player.capabilities.isCreativeMode && !event.player.isPlayerSleeping())
                data.decreaseSleepLevel();
-
          }
 
          if (event.player.isPlayerSleeping() && Config.giveSleepCounterOnSleep > 0) {
-            data.increaseSleepLevel(Config.giveSleepCounterOnSleep);
+            if (!(Config.capEnergyBar && data.getSleepLevel() >= Config.maximumSleepCounter))
+               data.increaseSleepLevel(Config.giveSleepCounterOnSleep);
          }
 
          // send update about tiredness to the client
