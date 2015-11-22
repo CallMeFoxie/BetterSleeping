@@ -1,0 +1,72 @@
+package foxie.bettersleeping;
+
+import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.relauncher.Side;
+import foxie.bettersleeping.compat.CompatibilityMorpheus;
+import foxie.bettersleeping.compat.CompatibilityOpenBlocks;
+import foxie.bettersleeping.proxy.ProxyCommon;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+
+@Mod(modid = BetterSleeping.MODID, name = BetterSleeping.NAME, version = BetterSleeping.VERSION)
+public class BetterSleeping {
+   public static final String MODID = "bettersleeping";
+   public static final String NAME = "Better Sleeping";
+   public static final String AUTHOR = "CallMeFoxie";
+   public static final String VERSION = "@VERSION@";
+
+   @SidedProxy(clientSide = "foxie.bettersleeping.proxy.ProxyClient", serverSide = "foxie.bettersleeping.proxy.ProxyCommon")
+   public static ProxyCommon proxy;
+
+   @Mod.Instance(MODID)
+   public static BetterSleeping INSTANCE;
+
+
+   BSSavedData playerData;
+
+
+   @EventHandler
+   public void preinit(FMLPreInitializationEvent event) {
+      Config c = new Config(event.getSuggestedConfigurationFile().getAbsolutePath());
+      proxy.preinit(event);
+   }
+
+   @EventHandler
+   public void init(FMLInitializationEvent event) {
+      proxy.init(event);
+   }
+
+   @EventHandler
+   public void postinit(FMLPostInitializationEvent event) {
+      if (Loader.isModLoaded("Morpheus")) {
+         CompatibilityMorpheus morpheus = new CompatibilityMorpheus();
+      }
+
+      if (ModAPIManager.INSTANCE.hasAPI("OpenBlocks|API")) {
+         MinecraftForge.EVENT_BUS.register(new CompatibilityOpenBlocks());
+      }
+   }
+
+
+   @EventHandler
+   public void onServerStarted(FMLServerStartedEvent event) {
+      if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+         return;
+
+      World world = MinecraftServer.getServer().worldServers[0];
+
+      playerData = (BSSavedData) world.loadItemData(BSSavedData.class, BetterSleeping.MODID);
+      if (playerData == null) {
+         playerData = new BSSavedData();
+         world.setItemData(BetterSleeping.MODID, playerData);
+      }
+   }
+
+
+}

@@ -1,5 +1,5 @@
 def VersionMajor = 1
-def VersionMinor = 2
+def VersionMinor = 3
 
 buildscript {
     repositories {
@@ -69,7 +69,7 @@ processResources
         }
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'cz.ondraster.bettersleeping.asm.BetterSleepingCoreLoader'
+        attributes 'FMLCorePlugin': 'foxie.bettersleeping.asm.BetterSleepingCoreLoader'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }

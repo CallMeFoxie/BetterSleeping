@@ -47,7 +47,7 @@ public class BetterSleepingAPI {
    public static PlayerData getSleepingProperty(EntityPlayer player) {
       if (dataProvider == null) {
          try {
-            Class clazz = Class.forName("cz.ondraster.bettersleeping.BSSavedData");
+            Class clazz = Class.forName("foxie.bettersleeping.BSSavedData");
             dataProvider = (ISavedDataProvider) clazz.newInstance();
          } catch (Exception e) {
             FMLLog.severe("[Better Sleeping API] Some mod tried accessing saved data without the mod loaded!");

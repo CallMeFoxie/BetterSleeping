@@ -25,7 +25,7 @@ If you want to use Eclipse
 gradlew eclipse
 
 In order for the mod to properly run you also need to make sure that the coremod is loaded by adding a parameter to the launch parameters:
--Dfml.coreMods.load=cz.ondraster.bettersleeping.asm.BetterSleepingCoreLoader
+-Dfml.coreMods.load=foxie.bettersleeping.asm.BetterSleepingCoreLoader
 ```
 
 Now your development environment should be ready to run my mod.
